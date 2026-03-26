@@ -1,8 +1,5 @@
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import ValidationError
-
 
 class ResourceCalendar(models.Model):
     _inherit = "resource.calendar"
@@ -18,7 +15,6 @@ class ResourceCalendar(models.Model):
         inverse_name="calendar_id",
         string="Employee Plannings",
     )
-    # ── Innovation : compteur d'employés utilisant ce calendrier ──────────────
     employee_count = fields.Integer(
         string="Employees using this calendar",
         compute="_compute_employee_count",

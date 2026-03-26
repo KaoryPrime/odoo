@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_happy_hour_form" model="ir.ui.view">
+        <field name="name">restaurant.happy.hour.form</field>
+        <field name="model">restaurant.happy.hour</field>
+        <field name="arch" type="xml">
+            <form string="Happy Hour">
+                <header>
+                    <button name="action_activate"
+                            string="Activer"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_expire"
+                            string="Expirer"
+                            type="object"
+                            invisible="state != 'active'"/>
+                    <button name="action_reset_draft"
+                            string="Remettre en brouillon"
+                            type="object"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,active,expired"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-cutlery"
+                                name="action_activate" type="object"
+                                invisible="1">
+                            <field name="product_count" widget="statinfo"
+                                   string="Produits"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Nom de la promotion"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="Créneau horaire">
+                            <field name="day_of_week"/>
+                            <field name="time_start" widget="float_time"/>
+                            <field name="time_end" widget="float_time"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </group>
+                        <group string="Configuration remise">
+                            <field name="discount_type"/>
+                            <field name="discount_value"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Produits concernés" name="products">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="original_price" readonly="True"/>
+                                    <field name="discounted_price" readonly="True"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Description de la promotion..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_happy_hour_list" model="ir.ui.view">
+        <field name="name">restaurant.happy.hour.list</field>
+        <field name="model">restaurant.happy.hour</field>
+        <field name="arch" type="xml">
+            <list string="Happy Hours"
+                  decoration-success="state == 'active'"
+                  decoration-muted="state == 'expired'"
+                  decoration-info="state == 'draft'">
+                <field name="name"/>
+                <field name="day_of_week"/>
+                <field name="time_start" widget="float_time"/>
+                <field name="time_end" widget="float_time"/>
+                <field name="discount_type"/>
+                <field name="discount_value"/>
+                <field name="product_count"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-info="state == 'draft'"
+                       decoration-danger="state == 'expired'"/>
+                <field name="color" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_happy_hour_search" model="ir.ui.view">
+        <field name="name">restaurant.happy.hour.search</field>
+        <field name="model">restaurant.happy.hour</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher">
+                <field name="name"/>
+                <separator/>
+                <filter string="Brouillon" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Actif" name="active_state"
+                        domain="[('state', '=', 'active')]"/>
+                <filter string="Expiré" name="expired"
+                        domain="[('state', '=', 'expired')]"/>
+                <separator/>
+                <filter string="Lundi" name="monday"
+                        domain="[('day_of_week', '=', '0')]"/>
+                <filter string="Mardi" name="tuesday"
+                        domain="[('day_of_week', '=', '1')]"/>
+                <filter string="Mercredi" name="wednesday"
+                        domain="[('day_of_week', '=', '2')]"/>
+                <filter string="Jeudi" name="thursday"
+                        domain="[('day_of_week', '=', '3')]"/>
+                <filter string="Vendredi" name="friday"
+                        domain="[('day_of_week', '=', '4')]"/>
+                <filter string="Samedi" name="saturday"
+                        domain="[('day_of_week', '=', '5')]"/>
+                <filter string="Dimanche" name="sunday"
+                        domain="[('day_of_week', '=', '6')]"/>
+                <separator/>
+                <group expand="0" string="Grouper par">
+                    <filter string="Jour" name="group_day"
+                            context="{'group_by': 'day_of_week'}"/>
+                    <filter string="Type de remise" name="group_discount_type"
+                            context="{'group_by': 'discount_type'}"/>
+                    <filter string="Statut" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_happy_hour" model="ir.actions.act_window">
+        <field name="name">Promotions Happy Hour</field>
+        <field name="res_model">restaurant.happy.hour</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune promotion Happy Hour pour le moment
+            </p>
+            <p>
+                Créez une promotion pour définir des remises automatiques
+                sur vos produits pendant des créneaux horaires spécifiques.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_happy_hour_planning" model="ir.actions.act_window">
+        <field name="name">Planning Happy Hour</field>
+        <field name="res_model">restaurant.happy.hour</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active_state': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune promotion active
+            </p>
+            <p>
+                Activez des promotions pour les voir apparaître dans le planning.
+            </p>
+        </field>
+    </record>
+
+</odoo>

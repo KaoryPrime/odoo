@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_restaurant_daily_menu_form" model="ir.ui.view">
+        <field name="name">restaurant.daily.menu.form</field>
+        <field name="model">restaurant.daily.menu</field>
+        <field name="arch" type="xml">
+            <form string="Menu du Jour">
+                <header>
+                    <button name="action_activate"
+                            string="Activer"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_archive_menu"
+                            string="Archiver"
+                            type="object"
+                            invisible="state != 'active'"/>
+                    <button name="action_reset_draft"
+                            string="Remettre en brouillon"
+                            type="object"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,active,archived"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="True"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="menu_type"/>
+                            <field name="responsible_id"/>
+                        </group>
+                        <group>
+                            <field name="menu_price"/>
+                            <field name="total_price" readonly="True"/>
+                            <field name="line_count" readonly="True"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Plats" name="lines">
+                            <field name="line_ids" editable="bottom">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id"/>
+                                    <field name="category"/>
+                                    <field name="description"/>
+                                    <field name="price"/>
+                                    <field name="is_available"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="note" placeholder="Notes internes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_restaurant_daily_menu_list" model="ir.ui.view">
+        <field name="name">restaurant.daily.menu.list</field>
+        <field name="model">restaurant.daily.menu</field>
+        <field name="arch" type="xml">
+            <list string="Menus du Jour"
+                  decoration-success="state == 'active'"
+                  decoration-muted="state == 'archived'"
+                  decoration-info="state == 'draft'">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="menu_type"/>
+                <field name="responsible_id"/>
+                <field name="line_count"/>
+                <field name="menu_price"/>
+                <field name="total_price"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-info="state == 'draft'"
+                       decoration-danger="state == 'archived'"/>
+                <field name="color" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_restaurant_daily_menu_search" model="ir.ui.view">
+        <field name="name">restaurant.daily.menu.search</field>
+        <field name="model">restaurant.daily.menu</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher">
+                <field name="name"/>
+                <field name="responsible_id"/>
+                <separator/>
+                <filter string="Brouillon" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Actif" name="active"
+                        domain="[('state', '=', 'active')]"/>
+                <filter string="Archivé" name="archived"
+                        domain="[('state', '=', 'archived')]"/>
+                <separator/>
+                <filter string="Aujourd'hui" name="today"
+                        domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Midi" name="midi"
+                        domain="[('menu_type', '=', 'midi')]"/>
+                <filter string="Soir" name="soir"
+                        domain="[('menu_type', '=', 'soir')]"/>
+                <filter string="Brunch" name="brunch"
+                        domain="[('menu_type', '=', 'brunch')]"/>
+                <filter string="Spécial" name="special"
+                        domain="[('menu_type', '=', 'special')]"/>
+                <group expand="0" string="Grouper par">
+                    <filter string="Date" name="group_date"
+                            context="{'group_by': 'date'}"/>
+                    <filter string="Service" name="group_menu_type"
+                            context="{'group_by': 'menu_type'}"/>
+                    <filter string="Responsable" name="group_responsible"
+                            context="{'group_by': 'responsible_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_restaurant_daily_menu_calendar" model="ir.ui.view">
+        <field name="name">restaurant.daily.menu.calendar</field>
+        <field name="model">restaurant.daily.menu</field>
+        <field name="arch" type="xml">
+            <calendar string="Planning Menus"
+                      date_start="date"
+                      color="menu_type"
+                      quick_create="False">
+                <field name="name"/>
+                <field name="menu_type"/>
+                <field name="responsible_id"/>
+                <field name="line_count"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="action_restaurant_daily_menu" model="ir.actions.act_window">
+        <field name="name">Menus du Jour</field>
+        <field name="res_model">restaurant.daily.menu</field>
+        <field name="view_mode">list,form,calendar</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier menu du jour
+            </p>
+            <p>
+                Planifiez vos menus quotidiens avec les plats disponibles
+                pour chaque service.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_restaurant_daily_menu_planning" model="ir.actions.act_window">
+        <field name="name">Planning</field>
+        <field name="res_model">restaurant.daily.menu</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="context">{}</field>
+    </record>
+
+</odoo>

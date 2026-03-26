@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_waste_line_form" model="ir.ui.view">
+        <field name="name">restaurant.waste.line.form</field>
+        <field name="model">restaurant.waste.line</field>
+        <field name="arch" type="xml">
+            <form string="Ligne de gaspillage">
+                <header>
+                    <button name="action_validate"
+                            string="Valider"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_reset_draft"
+                            string="Remettre en brouillon"
+                            type="object"
+                            invisible="state != 'validated'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,validated"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="True"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="Produit">
+                            <field name="product_id" readonly="state == 'validated'"/>
+                            <field name="category_id" readonly="True"/>
+                            <field name="uom_id" readonly="True"/>
+                        </group>
+                        <group string="Détails">
+                            <field name="waste_date" readonly="state == 'validated'"/>
+                            <field name="quantity" readonly="state == 'validated'"/>
+                            <field name="estimated_cost" readonly="True"/>
+                            <field name="reason" readonly="state == 'validated'"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Responsabilité">
+                            <field name="responsible_id"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Observation">
+                            <field name="note" placeholder="Notes complémentaires..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_waste_line_list" model="ir.ui.view">
+        <field name="name">restaurant.waste.line.list</field>
+        <field name="model">restaurant.waste.line</field>
+        <field name="arch" type="xml">
+            <list string="Suivi Gaspillage"
+                  decoration-danger="reason == 'expired'"
+                  decoration-warning="reason == 'overproduction'"
+                  decoration-info="state == 'draft'"
+                  decoration-success="state == 'validated'">
+                <field name="waste_date"/>
+                <field name="product_id"/>
+                <field name="category_id" optional="show"/>
+                <field name="quantity"/>
+                <field name="uom_id" optional="show"/>
+                <field name="estimated_cost" sum="Total"/>
+                <field name="reason"/>
+                <field name="responsible_id" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'validated'"/>
+                <field name="color" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_waste_line_search" model="ir.ui.view">
+        <field name="name">restaurant.waste.line.search</field>
+        <field name="model">restaurant.waste.line</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher">
+                <field name="product_id"/>
+                <field name="responsible_id"/>
+                <separator/>
+                <filter string="Périmé" name="expired"
+                        domain="[('reason', '=', 'expired')]"/>
+                <filter string="Endommagé" name="damaged"
+                        domain="[('reason', '=', 'damaged')]"/>
+                <filter string="Surproduction" name="overproduction"
+                        domain="[('reason', '=', 'overproduction')]"/>
+                <filter string="Préparation" name="preparation"
+                        domain="[('reason', '=', 'preparation')]"/>
+                <filter string="Autre" name="other"
+                        domain="[('reason', '=', 'other')]"/>
+                <separator/>
+                <filter string="Aujourd'hui" name="today"
+                        domain="[('waste_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Ce mois" name="this_month"
+                        domain="[('waste_date', '&gt;=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d')),
+                                 ('waste_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Brouillon" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Validé" name="validated"
+                        domain="[('state', '=', 'validated')]"/>
+                <group expand="0" string="Grouper par">
+                    <filter string="Produit" name="group_product"
+                            context="{'group_by': 'product_id'}"/>
+                    <filter string="Motif" name="group_reason"
+                            context="{'group_by': 'reason'}"/>
+                    <filter string="Date" name="group_date"
+                            context="{'group_by': 'waste_date'}"/>
+                    <filter string="Catégorie" name="group_category"
+                            context="{'group_by': 'category_id'}"/>
+                    <filter string="Responsable" name="group_responsible"
+                            context="{'group_by': 'responsible_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_waste_line_pivot" model="ir.ui.view">
+        <field name="name">restaurant.waste.line.pivot</field>
+        <field name="model">restaurant.waste.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Analyse gaspillage">
+                <field name="product_id" type="row"/>
+                <field name="reason" type="col"/>
+                <field name="waste_date" interval="month" type="col"/>
+                <field name="estimated_cost" type="measure"/>
+                <field name="quantity" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_waste_line_graph" model="ir.ui.view">
+        <field name="name">restaurant.waste.line.graph</field>
+        <field name="model">restaurant.waste.line</field>
+        <field name="arch" type="xml">
+            <graph string="Gaspillage par produit" type="bar">
+                <field name="product_id" type="row"/>
+                <field name="estimated_cost" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_waste_line_tracking" model="ir.actions.act_window">
+        <field name="name">Suivi Gaspillage</field>
+        <field name="res_model">restaurant.waste.line</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune ligne de gaspillage enregistrée
+            </p>
+            <p>
+                Créez une ligne pour chaque perte alimentaire afin de suivre
+                les coûts et améliorer la gestion des stocks.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_waste_line_analytics" model="ir.actions.act_window">
+        <field name="name">Analytique Gaspillage</field>
+        <field name="res_model">restaurant.waste.line</field>
+        <field name="view_mode">pivot,graph,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune donnée analytique disponible
+            </p>
+            <p>
+                Les données apparaîtront dès que des lignes de gaspillage seront enregistrées.
+            </p>
+        </field>
+    </record>
+
+</odoo>

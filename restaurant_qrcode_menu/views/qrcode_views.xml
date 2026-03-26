@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_restaurant_qrcode_menu_form" model="ir.ui.view">
+        <field name="name">restaurant.qrcode.menu.form</field>
+        <field name="model">restaurant.qrcode.menu</field>
+        <field name="arch" type="xml">
+            <form string="QR Code Menu">
+                <header>
+                    <button name="action_reset_scan_count"
+                            string="Réinitialiser les scans"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="scan_count == 0"/>
+                    <button name="action_increment_scan"
+                            string="Simuler un scan"
+                            type="object"
+                            class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="table_number"/>
+                            <field name="menu_url" widget="url"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="qr_code_image" widget="image" readonly="True"/>
+                            <field name="scan_count" readonly="True"/>
+                            <field name="last_scan_date" readonly="True"
+                                   invisible="not last_scan_date"/>
+                            <field name="active" invisible="True"/>
+                            <field name="color" invisible="True"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_restaurant_qrcode_menu_list" model="ir.ui.view">
+        <field name="name">restaurant.qrcode.menu.list</field>
+        <field name="model">restaurant.qrcode.menu</field>
+        <field name="arch" type="xml">
+            <list string="QR Codes Menu">
+                <field name="name"/>
+                <field name="table_number"/>
+                <field name="menu_url" widget="url"/>
+                <field name="scan_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_restaurant_qrcode_menu_search" model="ir.ui.view">
+        <field name="name">restaurant.qrcode.menu.search</field>
+        <field name="model">restaurant.qrcode.menu</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher QR Code">
+                <field name="name"/>
+                <field name="table_number"/>
+                <filter name="filter_active" string="Actif" domain="[('active', '=', True)]"/>
+                <filter name="filter_inactive" string="Archivé" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter name="group_table" string="Numéro de table" context="{'group_by': 'table_number'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

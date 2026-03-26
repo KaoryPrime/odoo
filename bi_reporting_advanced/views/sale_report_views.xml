@@ -1,5 +1,4 @@
 <odoo>
-    <!-- Vue LISTE -->
     <record id="bi_sale_order_report_tree_view" model="ir.ui.view">
         <field name="name">bi.sale.order.report.tree</field>
         <field name="model">bi.sale.order.report</field>
@@ -13,7 +12,6 @@
         </field>
     </record>
 
-    <!-- Vue GRAPHIQUE -->
     <record id="bi_sale_order_report_graph_view" model="ir.ui.view">
         <field name="name">bi.sale.order.report.graph</field>
         <field name="model">bi.sale.order.report</field>
@@ -25,7 +23,6 @@
         </field>
     </record>
 
-    <!-- Vue PIVOT -->
     <record id="bi_sale_order_report_pivot_view" model="ir.ui.view">
         <field name="name">bi.sale.order.report.pivot</field>
         <field name="model">bi.sale.order.report</field>
@@ -38,7 +35,6 @@
         </field>
     </record>
 
-    <!-- ACTION pour afficher dans le menu -->
     <record id="bi_sale_order_report_action" model="ir.actions.act_window">
         <field name="name">Rapport Avancé des Ventes</field>
         <field name="res_model">bi.sale.order.report</field>

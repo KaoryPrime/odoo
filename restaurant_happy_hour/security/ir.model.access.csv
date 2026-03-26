@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_restaurant_happy_hour_user,restaurant.happy.hour user,model_restaurant_happy_hour,base.group_user,1,1,1,0
+access_restaurant_happy_hour_manager,restaurant.happy.hour manager,model_restaurant_happy_hour,base.group_system,1,1,1,1
+access_restaurant_happy_hour_line_user,restaurant.happy.hour.line user,model_restaurant_happy_hour_line,base.group_user,1,1,1,0
+access_restaurant_happy_hour_line_manager,restaurant.happy.hour.line manager,model_restaurant_happy_hour_line,base.group_system,1,1,1,1

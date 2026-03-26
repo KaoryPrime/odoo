@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- ══════════════════════════════════════════════
-         VUE FORMULAIRE
-    ══════════════════════════════════════════════ -->
     <record id="view_kitchen_analytics_form" model="ir.ui.view">
         <field name="name">kitchen.analytics.line.form</field>
         <field name="model">kitchen.analytics.line</field>
@@ -70,9 +67,6 @@
         </field>
     </record>
 
-    <!-- ══════════════════════════════════════════════
-         VUE LISTE
-    ══════════════════════════════════════════════ -->
     <record id="view_kitchen_analytics_list" model="ir.ui.view">
         <field name="name">kitchen.analytics.line.list</field>
         <field name="model">kitchen.analytics.line</field>
@@ -101,9 +95,6 @@
         </field>
     </record>
 
-    <!-- ══════════════════════════════════════════════
-         VUE PIVOT — Tableau de bord croisé
-    ══════════════════════════════════════════════ -->
     <record id="view_kitchen_analytics_pivot" model="ir.ui.view">
         <field name="name">kitchen.analytics.line.pivot</field>
         <field name="model">kitchen.analytics.line</field>
@@ -119,9 +110,6 @@
         </field>
     </record>
 
-    <!-- ══════════════════════════════════════════════
-         VUE GRAPHIQUE
-    ══════════════════════════════════════════════ -->
     <record id="view_kitchen_analytics_graph" model="ir.ui.view">
         <field name="name">kitchen.analytics.line.graph</field>
         <field name="model">kitchen.analytics.line</field>
@@ -133,9 +121,6 @@
         </field>
     </record>
 
-    <!-- ══════════════════════════════════════════════
-         VUE RECHERCHE
-    ══════════════════════════════════════════════ -->
     <record id="view_kitchen_analytics_search" model="ir.ui.view">
         <field name="name">kitchen.analytics.line.search</field>
         <field name="model">kitchen.analytics.line</field>
@@ -170,9 +155,6 @@
         </field>
     </record>
 
-    <!-- ══════════════════════════════════════════════
-         ACTIONS
-    ══════════════════════════════════════════════ -->
     <record id="action_kitchen_analytics" model="ir.actions.act_window">
         <field name="name">Tableau de bord Cuisine</field>
         <field name="res_model">kitchen.analytics.line</field>

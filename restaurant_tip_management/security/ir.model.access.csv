@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_restaurant_tip_user,restaurant.tip user,model_restaurant_tip,base.group_user,1,1,1,0
+access_restaurant_tip_manager,restaurant.tip manager,model_restaurant_tip,base.group_system,1,1,1,1
+access_restaurant_tip_pool_user,restaurant.tip.pool user,model_restaurant_tip_pool,base.group_user,1,1,1,0
+access_restaurant_tip_pool_manager,restaurant.tip.pool manager,model_restaurant_tip_pool,base.group_system,1,1,1,1
+access_restaurant_tip_pool_line_user,restaurant.tip.pool.line user,model_restaurant_tip_pool_line,base.group_user,1,1,1,0
+access_restaurant_tip_pool_line_manager,restaurant.tip.pool.line manager,model_restaurant_tip_pool_line,base.group_system,1,1,1,1

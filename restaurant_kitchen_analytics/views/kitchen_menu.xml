@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!--
-        Menu racine autonome "Cuisine" avec icône dédiée.
-        Aucune dépendance à un menu parent externe.
-    -->
     <menuitem id="menu_kitchen_analytics_root"
               name="Cuisine"
               web_icon="restaurant_kitchen_analytics,static/description/icon.svg"

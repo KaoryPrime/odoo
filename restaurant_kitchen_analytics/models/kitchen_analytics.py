@@ -1,7 +1,4 @@
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
-
 from odoo import _, api, fields, models
-
 
 class KitchenAnalyticsLine(models.Model):
     """
@@ -16,16 +13,12 @@ class KitchenAnalyticsLine(models.Model):
     _description = 'Ligne Analytique Cuisine'
     _order = 'order_datetime desc'
 
-    # ── Identité ──────────────────────────────────────────────────────────────
-
     name = fields.Char(
         string='Référence',
         compute='_compute_name',
         store=True,
         help="Identifiant lisible : numéro de commande + nom du plat.",
     )
-
-    # ── Relations ─────────────────────────────────────────────────────────────
 
     sale_order_id = fields.Many2one(
         comodel_name='sale.order',
@@ -41,7 +34,6 @@ class KitchenAnalyticsLine(models.Model):
         index=True,
     )
 
-    # Related — stockés pour le reporting (filtres, group-by, pivot)
     partner_id = fields.Many2one(
         comodel_name='res.partner',
         related='sale_order_id.partner_id',
@@ -54,8 +46,6 @@ class KitchenAnalyticsLine(models.Model):
         string='Date commande',
     )
 
-    # ── Horodatages ───────────────────────────────────────────────────────────
-
     order_datetime = fields.Datetime(
         string='Heure de commande',
         required=True,
@@ -66,8 +56,6 @@ class KitchenAnalyticsLine(models.Model):
         string='Heure de livraison',
         help="Moment où le plat a été remis au client.",
     )
-
-    # ── Champs calculés (store=True) ──────────────────────────────────────────
 
     preparation_time = fields.Float(
         string='Temps de préparation (min)',
@@ -103,8 +91,6 @@ class KitchenAnalyticsLine(models.Model):
         store=True,
     )
 
-    # ── Statut ────────────────────────────────────────────────────────────────
-
     state = fields.Selection(
         selection=[
             ('pending', 'En attente'),
@@ -116,8 +102,6 @@ class KitchenAnalyticsLine(models.Model):
         default='pending',
         required=True,
     )
-
-    # ── Compute ───────────────────────────────────────────────────────────────
 
     @api.depends('sale_order_id', 'product_id')
     def _compute_name(self):
@@ -156,15 +140,13 @@ class KitchenAnalyticsLine(models.Model):
     @api.depends('state')
     def _compute_color(self):
         color_map = {
-            'pending': 0,       # gris
-            'in_progress': 4,   # bleu
-            'done': 10,         # vert
-            'cancelled': 1,     # rouge
+            'pending': 0,
+            'in_progress': 4,
+            'done': 10,
+            'cancelled': 1,
         }
         for line in self:
             line.color = color_map.get(line.state, 0)
-
-    # ── Actions de workflow ───────────────────────────────────────────────────
 
     def action_start(self):
         """Passer le plat à l'état 'En préparation'."""

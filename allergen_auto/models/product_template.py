@@ -1,6 +1,5 @@
 from odoo import models, fields, api
 
-
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
@@ -45,10 +44,8 @@ class ProductTemplate(models.Model):
         """
         for product in self:
             if product.bom_ids:
-                # Produit avec BoM → calcul automatique depuis les composants
                 allergens = self.env['allergen.allergen']
                 for bom in product.bom_ids:
                     for line in bom.bom_line_ids:
                         allergens |= line.product_id.product_tmpl_id.allergen_ids
                 product.allergen_ids = allergens
-            # Pas de BoM → on ne touche pas (saisie manuelle, champ store=True conserve la valeur)

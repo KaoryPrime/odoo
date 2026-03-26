@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_customer_feedback_form" model="ir.ui.view">
+        <field name="name">restaurant.customer.feedback.form</field>
+        <field name="model">restaurant.customer.feedback</field>
+        <field name="arch" type="xml">
+            <form string="Avis Client">
+                <header>
+                    <button name="action_mark_read"
+                            string="Marquer comme lu"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'new'"/>
+                    <button name="action_respond"
+                            string="Marquer répondu"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state not in ['new', 'read']"/>
+                    <button name="action_archive_feedback"
+                            string="Archiver"
+                            type="object"
+                            invisible="state == 'archived'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new,read,responded"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="True"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="Informations">
+                            <field name="partner_id"/>
+                            <field name="sale_order_id"/>
+                            <field name="feedback_date"/>
+                            <field name="source"/>
+                            <field name="would_recommend"/>
+                        </group>
+                        <group string="Évaluations">
+                            <field name="rating_food" widget="priority"/>
+                            <field name="rating_service" widget="priority"/>
+                            <field name="rating_ambiance" widget="priority"/>
+                            <field name="rating_value" widget="priority"/>
+                            <field name="rating_overall" readonly="True"/>
+                        </group>
+                    </group>
+
+                    <group string="Commentaire">
+                        <field name="comment" nolabel="1" colspan="2"
+                               placeholder="Commentaire du client..."/>
+                    </group>
+
+                    <group string="Réponse du restaurant"
+                           invisible="state not in ['responded', 'archived']">
+                        <field name="response" nolabel="1" colspan="2"
+                               placeholder="Réponse du restaurant..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_customer_feedback_list" model="ir.ui.view">
+        <field name="name">restaurant.customer.feedback.list</field>
+        <field name="model">restaurant.customer.feedback</field>
+        <field name="arch" type="xml">
+            <list string="Avis Clients"
+                  decoration-success="rating_overall &gt;= 4"
+                  decoration-warning="rating_overall &gt;= 3 and rating_overall &lt; 4"
+                  decoration-danger="rating_overall &lt; 3">
+                <field name="feedback_date"/>
+                <field name="partner_id"/>
+                <field name="source" optional="show"/>
+                <field name="rating_food"/>
+                <field name="rating_service"/>
+                <field name="rating_ambiance" optional="hide"/>
+                <field name="rating_value" optional="hide"/>
+                <field name="rating_overall" decoration-bf="True"/>
+                <field name="would_recommend" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'responded'"
+                       decoration-info="state == 'read'"
+                       decoration-warning="state == 'new'"
+                       decoration-muted="state == 'archived'"/>
+                <field name="color" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_customer_feedback_search" model="ir.ui.view">
+        <field name="name">restaurant.customer.feedback.search</field>
+        <field name="model">restaurant.customer.feedback</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher">
+                <field name="partner_id"/>
+                <field name="sale_order_id"/>
+                <separator/>
+                <filter string="Nouveau" name="new"
+                        domain="[('state', '=', 'new')]"/>
+                <filter string="Lu" name="read"
+                        domain="[('state', '=', 'read')]"/>
+                <filter string="Répondu" name="responded"
+                        domain="[('state', '=', 'responded')]"/>
+                <filter string="Archivé" name="archived"
+                        domain="[('state', '=', 'archived')]"/>
+                <separator/>
+                <filter string="Excellent (≥4)" name="rating_high"
+                        domain="[('rating_overall', '&gt;=', 4)]"/>
+                <filter string="Moyen (≥3)" name="rating_medium"
+                        domain="[('rating_overall', '&gt;=', 3), ('rating_overall', '&lt;', 4)]"/>
+                <filter string="Faible (&lt;3)" name="rating_low"
+                        domain="[('rating_overall', '&lt;', 3)]"/>
+                <separator/>
+                <filter string="Sur place" name="source_on_site"
+                        domain="[('source', '=', 'on_site')]"/>
+                <filter string="Google" name="source_google"
+                        domain="[('source', '=', 'google')]"/>
+                <filter string="Site web" name="source_website"
+                        domain="[('source', '=', 'website')]"/>
+                <filter string="Téléphone" name="source_phone"
+                        domain="[('source', '=', 'phone')]"/>
+                <filter string="Email" name="source_email"
+                        domain="[('source', '=', 'email')]"/>
+                <separator/>
+                <group expand="0" string="Grouper par">
+                    <filter string="Source" name="group_source"
+                            context="{'group_by': 'source'}"/>
+                    <filter string="Statut" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                    <filter string="Mois" name="group_month"
+                            context="{'group_by': 'feedback_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_customer_feedback_pivot" model="ir.ui.view">
+        <field name="name">restaurant.customer.feedback.pivot</field>
+        <field name="model">restaurant.customer.feedback</field>
+        <field name="arch" type="xml">
+            <pivot string="Analyse des avis">
+                <field name="source" type="row"/>
+                <field name="feedback_date" type="col" interval="month"/>
+                <field name="rating_overall" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_customer_feedback_graph" model="ir.ui.view">
+        <field name="name">restaurant.customer.feedback.graph</field>
+        <field name="model">restaurant.customer.feedback</field>
+        <field name="arch" type="xml">
+            <graph string="Avis Clients" type="bar">
+                <field name="rating_overall" type="row"/>
+                <field name="rating_overall" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_customer_feedback_all" model="ir.actions.act_window">
+        <field name="name">Tous les avis</field>
+        <field name="res_model">restaurant.customer.feedback</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+        <field name="context">{'search_default_new': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucun avis client pour le moment
+            </p>
+            <p>
+                Créez un avis pour suivre la satisfaction de vos clients.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_customer_feedback_analytics" model="ir.actions.act_window">
+        <field name="name">Analytique</field>
+        <field name="res_model">restaurant.customer.feedback</field>
+        <field name="view_mode">pivot,graph,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune donnée analytique disponible
+            </p>
+            <p>
+                Les statistiques apparaîtront une fois les premiers avis enregistrés.
+            </p>
+        </field>
+    </record>
+
+</odoo>

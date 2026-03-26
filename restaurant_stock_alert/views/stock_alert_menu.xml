@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_stock_alert_root"
+              name="Alertes Stock"
+              sequence="95"/>
+
+    <menuitem id="menu_stock_alert_rules"
+              name="Règles"
+              parent="menu_stock_alert_root"
+              action="action_stock_alert_rule"
+              sequence="10"/>
+
+    <menuitem id="menu_stock_alert_lines"
+              name="Alertes"
+              parent="menu_stock_alert_root"
+              action="action_stock_alert_line"
+              sequence="20"/>
+
+    <menuitem id="menu_stock_alert_analytics"
+              name="Analytique"
+              parent="menu_stock_alert_root"
+              action="action_stock_alert_line_analytics"
+              sequence="30"/>
+
+</odoo>

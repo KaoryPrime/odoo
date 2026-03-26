@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- ── Vue liste des commandes ── -->
-    <!--
-        Odoo 18 : sale.view_order_tree n'existe plus.
-        On hérite de sale.view_quotation_tree_with_onboarding
-        qui est la vue liste principale en Odoo 18.
-    -->
     <record id="sale_order_list_inherit_slots" model="ir.ui.view">
         <field name="name">sale.order.list.slots</field>
         <field name="model">sale.order</field>
@@ -20,7 +14,6 @@
         </field>
     </record>
 
-    <!-- ── Vue formulaire des commandes ── -->
     <record id="sale_order_form_inherit_slots" model="ir.ui.view">
         <field name="name">sale.order.form.slots</field>
         <field name="model">sale.order</field>

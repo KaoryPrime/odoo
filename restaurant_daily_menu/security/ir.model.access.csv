@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_restaurant_daily_menu_user,restaurant.daily.menu user,model_restaurant_daily_menu,base.group_user,1,1,1,0
+access_restaurant_daily_menu_manager,restaurant.daily.menu manager,model_restaurant_daily_menu,base.group_system,1,1,1,1
+access_restaurant_daily_menu_line_user,restaurant.daily.menu.line user,model_restaurant_daily_menu_line,base.group_user,1,1,1,0
+access_restaurant_daily_menu_line_manager,restaurant.daily.menu.line manager,model_restaurant_daily_menu_line,base.group_system,1,1,1,1

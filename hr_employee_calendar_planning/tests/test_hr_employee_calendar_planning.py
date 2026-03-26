@@ -1,10 +1,7 @@
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-
 from odoo import Command, exceptions, fields
 from odoo.tests import TransactionCase, new_test_user
 
 from ..hooks import _split_calendars_for_employees
-
 
 class TestHrEmployeeCalendarPlanning(TransactionCase):
     """
@@ -91,7 +88,6 @@ class TestHrEmployeeCalendarPlanning(TransactionCase):
             Command.set([cls.global_leave1.id, cls.global_leave2.id])
         ]
         cls.calendar2.global_leave_ids = [Command.set([cls.global_leave3.id])]
-        # Supprimer le calendar_ids par défaut pour clarifier les tests
         cls.employee.write({"calendar_ids": [Command.delete(cls.employee.calendar_ids.id)]})
 
     def test_calendar_planning(self):
@@ -114,7 +110,6 @@ class TestHrEmployeeCalendarPlanning(TransactionCase):
             )),
             10,
         )
-        # Modifier une ligne
         calendar_line = self.employee.calendar_ids[0]
         calendar_line.date_end = "2019-12-30"
         calendar = self.employee.resource_calendar_id

@@ -7,7 +7,6 @@
         <field name="inherit_id" ref="resource.resource_calendar_form"/>
         <field name="arch" type="xml">
 
-            <!-- Stat button : nb employés utilisant ce calendrier -->
             <xpath expr="//sheet" position="before">
                 <div class="oe_button_box" name="button_box">
                     <button
@@ -21,7 +20,6 @@
                 </div>
             </xpath>
 
-            <!-- Onglet : employés utilisant ce calendrier comme planning -->
             <notebook position="inside">
                 <page name="employee_calendar" string="Plannings employés">
                     <field name="employee_calendar_ids">

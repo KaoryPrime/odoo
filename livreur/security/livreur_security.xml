@@ -1,5 +1,4 @@
 <odoo>
-    <!-- Groupe Livreur -->
     <record id="group_livreur" model="res.groups">
         <field name="name">Livreur</field>
         <field name="category_id" ref="base.module_category_sales"/>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_loyalty_root"
+              name="Fidélité"
+              sequence="87"/>
+
+    <menuitem id="menu_loyalty_card"
+              name="Cartes fidélité"
+              parent="menu_loyalty_root"
+              action="action_loyalty_card"
+              sequence="10"/>
+
+    <menuitem id="menu_loyalty_history"
+              name="Historique"
+              parent="menu_loyalty_root"
+              action="action_loyalty_history"
+              sequence="20"/>
+
+</odoo>

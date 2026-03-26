@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!--
-        Injection des créneaux restaurant sur la page de paiement website_sale.
-        Odoo 18 : website_sale.payment est la bonne vue parente.
-        Bootstrap 5 : form-group → mb-3, form-control → form-select pour les <select>
-    -->
     <template id="restaurant_order_slots_payment"
               inherit_id="website_sale.payment"
               name="Créneaux restaurant">
@@ -18,7 +13,6 @@
                 </div>
                 <div class="card-body">
 
-                    <!-- Type de commande -->
                     <div class="mb-3">
                         <label for="order_type" class="form-label fw-bold">
                             Type de commande <span class="text-danger">*</span>
@@ -33,7 +27,6 @@
                         </select>
                     </div>
 
-                    <!-- Jour de retrait -->
                     <div class="mb-3">
                         <label for="pickup_date" class="form-label fw-bold">
                             Jour de retrait/livraison <span class="text-danger">*</span>
@@ -49,7 +42,6 @@
                         </select>
                     </div>
 
-                    <!-- Créneau horaire -->
                     <div class="mb-3">
                         <label for="delivery_slot" class="form-label fw-bold">
                             Créneau horaire <span class="text-danger">*</span>

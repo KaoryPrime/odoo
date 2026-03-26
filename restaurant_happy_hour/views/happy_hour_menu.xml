@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_happy_hour_root"
+              name="Happy Hour"
+              web_icon="restaurant_happy_hour,static/description/icon.svg"
+              sequence="90"/>
+
+    <menuitem id="menu_happy_hour_promotions"
+              name="Promotions"
+              parent="menu_happy_hour_root"
+              action="action_happy_hour"
+              sequence="10"/>
+
+    <menuitem id="menu_happy_hour_planning"
+              name="Planning"
+              parent="menu_happy_hour_root"
+              action="action_happy_hour_planning"
+              sequence="20"/>
+
+</odoo>

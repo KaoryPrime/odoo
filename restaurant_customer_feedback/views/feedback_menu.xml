@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_customer_feedback_root"
+              name="Avis Clients"
+              web_icon="restaurant_customer_feedback,static/description/icon.svg"
+              sequence="90"/>
+
+    <menuitem id="menu_customer_feedback_all"
+              name="Tous les avis"
+              parent="menu_customer_feedback_root"
+              action="action_customer_feedback_all"
+              sequence="10"/>
+
+    <menuitem id="menu_customer_feedback_analytics"
+              name="Analytique"
+              parent="menu_customer_feedback_root"
+              action="action_customer_feedback_analytics"
+              sequence="20"/>
+
+</odoo>

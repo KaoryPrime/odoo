@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="50" fill="#E8472A"/>
+  <!-- Chef hat -->
+  <ellipse cx="50" cy="62" rx="22" ry="6" fill="#FFFFFF"/>
+  <rect x="28" y="40" width="44" height="22" rx="2" fill="#FFFFFF"/>
+  <!-- Hat dome -->
+  <ellipse cx="50" cy="40" rx="18" ry="14" fill="#FFFFFF"/>
+  <!-- Hat band -->
+  <rect x="28" y="56" width="44" height="5" rx="1" fill="#F0F0F0"/>
+  <!-- Fork and knife -->
+  <line x1="36" y1="70" x2="36" y2="85" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="36" y1="70" x2="34" y2="75" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="36" y1="70" x2="38" y2="75" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="64" y1="70" x2="64" y2="85" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M61 70 Q61 76 64 76 Q67 76 67 70 Z" fill="#FFFFFF"/>
+</svg>

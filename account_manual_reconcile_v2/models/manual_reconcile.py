@@ -5,7 +5,6 @@ class AccountMove(models.Model):
 
     lettrage_ref = fields.Char(string='Référence Lettrage', copy=False)
 
-# On ajoute le même champ sur le modèle des paiements
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 

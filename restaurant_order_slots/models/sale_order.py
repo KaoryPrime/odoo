@@ -1,9 +1,5 @@
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
-
 from odoo import _, api, fields, models
 
-
-# Créneaux disponibles — centralisés ici pour être réutilisés
 DELIVERY_SLOT_SELECTION = [
     ('11h-12h', '11h – 12h'),
     ('12h-13h', '12h – 13h'),
@@ -12,7 +8,6 @@ DELIVERY_SLOT_SELECTION = [
     ('20h-21h', '20h – 21h'),
     ('21h-22h', '21h – 22h'),
 ]
-
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -25,8 +20,6 @@ class SaleOrder(models.Model):
         ],
         string="Jour de retrait/livraison",
         default='today',
-        # ⚠️ PAS de required=True ici : les commandes backend
-        # (devis, imports, API) ne renseignent pas ce champ
         tracking=True,
     )
 
@@ -46,8 +39,6 @@ class SaleOrder(models.Model):
         default='12h-13h',
         tracking=True,
     )
-
-    # ── Champ calculé : libellé complet pour affichage ───────────────────────
 
     order_slot_summary = fields.Char(
         string='Résumé créneau',

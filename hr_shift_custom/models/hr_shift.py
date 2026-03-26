@@ -1,5 +1,3 @@
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
-
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import ValidationError
 from datetime import timedelta
@@ -7,15 +5,12 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-
 class HrShift(models.Model):
     _name = 'hr.shift'
     _description = 'Shift employé'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'start_time desc'
     _rec_name = 'name'
-
-    # ── Champs principaux ─────────────────────────────────────────────────────
 
     name = fields.Char(
         string='Nom du shift',
@@ -69,8 +64,6 @@ class HrShift(models.Model):
         required=True,
     )
 
-    # ── Champs calculés ───────────────────────────────────────────────────────
-
     duration = fields.Float(
         string='Durée (heures)',
         compute='_compute_duration',
@@ -86,8 +79,6 @@ class HrShift(models.Model):
         string='Avertissement',
         compute='_compute_warning_message',
     )
-
-    # ── Compute ───────────────────────────────────────────────────────────────
 
     @api.depends('start_time', 'end_time')
     def _compute_duration(self):
@@ -106,10 +97,10 @@ class HrShift(models.Model):
     @api.depends('state')
     def _compute_color(self):
         color_map = {
-            'draft': 0,       # gris
-            'confirmed': 4,   # bleu
-            'done': 10,       # vert
-            'cancelled': 1,   # rouge
+            'draft': 0,
+            'confirmed': 4,
+            'done': 10,
+            'cancelled': 1,
         }
         for shift in self:
             shift.color = color_map.get(shift.state, 0)
@@ -137,15 +128,12 @@ class HrShift(models.Model):
                 )
             shift.warning_message = ' '.join(warnings) if warnings else False
 
-    # ── Contraintes ───────────────────────────────────────────────────────────
-
     @api.constrains('start_time', 'end_time', 'employee_id', 'company_id')
     def _check_shift_rules(self):
         for shift in self:
             if not shift.start_time or not shift.end_time:
                 continue
 
-            # 1. Cohérence début/fin
             if shift.start_time >= shift.end_time:
                 raise ValidationError(
                     _("L'heure de début doit être antérieure à l'heure de fin.")
@@ -153,7 +141,6 @@ class HrShift(models.Model):
 
             config = self.env['hr.shift.config'].get_config()
 
-            # 2. Pause minimale entre shifts (configurable)
             if config.enforce_min_break:
                 last_shift = self.search([
                     ('employee_id', '=', shift.employee_id.id),
@@ -174,7 +161,6 @@ class HrShift(models.Model):
                             'actual': int(pause.total_seconds() / 60),
                         })
 
-                # Vérifier aussi le shift suivant
                 next_shift = self.search([
                     ('employee_id', '=', shift.employee_id.id),
                     ('start_time', '>=', shift.end_time),
@@ -194,9 +180,7 @@ class HrShift(models.Model):
                             'actual': int(pause.total_seconds() / 60),
                         })
 
-            # 3. Durée maximale par jour (UTC-safe)
             if config.enforce_max_hours:
-                # Bornes de la journée en UTC à partir du datetime du shift
                 day_start = shift.start_time.replace(
                     hour=0, minute=0, second=0, microsecond=0
                 )
@@ -223,7 +207,6 @@ class HrShift(models.Model):
                         'max': config.max_hours_per_day,
                     })
 
-            # 4. Chevauchement de shifts
             overlapping = self.search([
                 ('employee_id', '=', shift.employee_id.id),
                 ('state', 'not in', ['cancelled']),
@@ -239,8 +222,6 @@ class HrShift(models.Model):
                     'employee': shift.employee_id.name,
                     'shift': overlapping[0].name,
                 })
-
-    # ── Actions de workflow ───────────────────────────────────────────────────
 
     def action_confirm(self):
         for shift in self:
@@ -266,15 +247,12 @@ class HrShift(models.Model):
                 shift.state = 'draft'
                 shift.message_post(body=_("Shift remis en brouillon."))
 
-    # ── ORM ───────────────────────────────────────────────────────────────────
-
     @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
         return records
 
     def write(self, vals):
-        # Empêcher la modification d'un shift terminé ou annulé
         for shift in self:
             if shift.state in ('done', 'cancelled') and any(
                 k in vals for k in ('start_time', 'end_time', 'employee_id')

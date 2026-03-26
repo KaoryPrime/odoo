@@ -1,5 +1,3 @@
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import config
@@ -26,7 +24,6 @@ SECTION_LINES = [
         "display_type": "line_section",
     }),
 ]
-
 
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
@@ -63,7 +60,6 @@ class HrEmployee(models.Model):
         for week in (["0", "1"] if two_weeks else ["0"]):
             if two_weeks:
                 section = SECTION_LINES[int(week)]
-                # Copier le Command pour pouvoir modifier la séquence
                 section_data = dict(section[2])
                 section_data["sequence"] = seq
                 vals_list.append(Command.create(section_data))
@@ -89,7 +85,6 @@ class HrEmployee(models.Model):
                     )[0]
                     seq += 1
                     vals_list.append(Command.create(data))
-        # Autogenerate
         if not self.resource_id.calendar_id.auto_generate:
             self.resource_id.calendar_id = (
                 self.env["resource.calendar"]
@@ -108,12 +103,10 @@ class HrEmployee(models.Model):
             )
         else:
             self.resource_calendar_id.attendance_ids = vals_list
-        # Heures par jour : prendre le premier planning (date_end la plus haute)
         if self.calendar_ids:
             self.resource_id.calendar_id.hours_per_day = (
                 self.calendar_ids[0].calendar_id.hours_per_day
             )
-            # Congés globaux
             self.resource_id.calendar_id.global_leave_ids = [
                 Command.set(self.copy_global_leaves()),
             ]
@@ -160,7 +153,6 @@ class HrEmployee(models.Model):
             raise UserError(_("You can not create employees without any calendar."))
         res.filtered("calendar_ids").regenerate_calendar()
         return res
-
 
 class HrEmployeeCalendar(models.Model):
     _name = "hr.employee.calendar"

@@ -1,8 +1,5 @@
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
-
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-
 
 class HrShiftConfig(models.Model):
     _name = 'hr.shift.config'
@@ -22,7 +19,6 @@ class HrShiftConfig(models.Model):
         required=True,
     )
 
-    # ── Règles configurables ───────────────────────────────────────────────────
     min_break_minutes = fields.Integer(
         string='Pause minimale entre shifts (minutes)',
         default=30,
@@ -78,7 +74,6 @@ class HrShiftConfig(models.Model):
             ('active', '=', True),
         ], limit=1)
         if not config:
-            # Créer une config par défaut si aucune n'existe
             config = self.create({
                 'name': 'Configuration par défaut',
                 'company_id': self.env.company.id,

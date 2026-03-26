@@ -1,9 +1,6 @@
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-
 from collections import defaultdict
 
 from odoo import SUPERUSER_ID, Command, api
-
 
 def post_init_hook(env):
     """
@@ -15,7 +12,6 @@ def post_init_hook(env):
     """
     employees = env["hr.employee"].search([])
     _split_calendars_for_employees(env, employees)
-
 
 def _split_calendars_for_employees(env, employees):
     """Logique extraite pour être réutilisable depuis les tests."""
@@ -35,7 +31,6 @@ def _split_calendars_for_employees(env, employees):
         calendar = calendar_obj.browse(group["calendar_id"][0])
         lines = line_obj.search(group["__domain"])
         if len(calendar.attendance_ids) == len(lines):
-            # Même calendrier, pas de duplication
             new_calendar = calendar
         else:
             name = "{} {}-{}".format(
@@ -63,11 +58,9 @@ def _split_calendars_for_employees(env, employees):
                 "date_end": data[1],
                 "calendar_id": data[2].id,
             }))
-        # Récupérer les congés de l'employé avant de changer de calendrier
         leaves = employee.resource_calendar_id.leave_ids.filtered(
             lambda x: x.resource_id == employee.resource_id
         )
         employee.calendar_ids = calendar_lines
         employee.resource_calendar_id.active = False
-        # Lier les congés au nouveau calendrier auto-généré
         leaves.write({"calendar_id": employee.resource_calendar_id.id})

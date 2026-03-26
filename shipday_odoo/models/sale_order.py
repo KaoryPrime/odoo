@@ -1,5 +1,3 @@
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
-
 import logging
 from datetime import datetime, timedelta
 
@@ -10,14 +8,10 @@ from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
-# Délai de timeout pour les appels API (secondes)
 SHIPDAY_TIMEOUT = 10
-
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-
-    # ── Champs de traçabilité ──────────────────────────────────────────────────
 
     shipday_sent = fields.Boolean(
         string='Envoyé à Shipday',
@@ -36,8 +30,6 @@ class SaleOrder(models.Model):
         readonly=True,
         copy=False,
     )
-
-    # ── Helpers ───────────────────────────────────────────────────────────────
 
     def _get_shipday_api_key(self):
         """Récupère la clé API depuis les paramètres système."""
@@ -88,7 +80,6 @@ class SaleOrder(models.Model):
         """
         today = fields.Date.today()
 
-        # Compatibilité optionnelle avec restaurant_order_slots
         if hasattr(self, 'pickup_date') and self.pickup_date:
             pickup = self.pickup_date
             if pickup == 'today':
@@ -105,12 +96,10 @@ class SaleOrder(models.Model):
         Calcule l'heure de pickup depuis le créneau de livraison.
         Compatible avec restaurant_order_slots si présent.
         """
-        # Compatibilité optionnelle avec restaurant_order_slots
         if hasattr(self, 'delivery_slot') and self.delivery_slot:
             slot = self.delivery_slot
             try:
                 slot_start = slot.split('-')[0].strip().replace('h', ':00')
-                # Valider le format HH:MM:SS
                 datetime.strptime(
                     f"{delivery_date.strftime('%Y-%m-%d')} {slot_start}",
                     "%Y-%m-%d %H:%M:%S"
@@ -119,7 +108,6 @@ class SaleOrder(models.Model):
             except Exception:
                 _logger.warning("shipday_odoo: format de créneau invalide '%s'", slot)
 
-        # Fallback : heure courante arrondie à la demi-heure
         now = datetime.now()
         rounded = now.replace(minute=0 if now.minute < 30 else 30, second=0, microsecond=0)
         return rounded.strftime('%H:%M:%S')
@@ -133,7 +121,6 @@ class SaleOrder(models.Model):
         pickup_time = self._resolve_pickup_time(delivery_date)
         delay = self._get_shipday_delivery_delay()
 
-        # Calcul de l'heure de livraison estimée
         date_str = delivery_date.strftime('%Y-%m-%d')
         try:
             pickup_dt = datetime.strptime(f"{date_str} {pickup_time}", "%Y-%m-%d %H:%M:%S")
@@ -158,8 +145,6 @@ class SaleOrder(models.Model):
             "expectedPickupTime": pickup_time,
             "expectedDeliveryTime": delivery_time,
         }
-
-    # ── Action principale ─────────────────────────────────────────────────────
 
     def action_send_to_shipday(self):
         """Envoie la commande vers Shipday via l'API REST."""
@@ -198,7 +183,6 @@ class SaleOrder(models.Model):
             if response.status_code in (200, 201):
                 order.shipday_sent = True
                 order.shipday_last_error = False
-                # Récupérer l'ID Shipday si présent dans la réponse
                 try:
                     resp_data = response.json()
                     if isinstance(resp_data, dict):

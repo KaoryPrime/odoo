@@ -1,5 +1,3 @@
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
-
 import logging
 
 from odoo.http import request, route
@@ -7,14 +5,12 @@ from odoo.addons.website_sale.controllers.main import WebsiteSale
 
 _logger = logging.getLogger(__name__)
 
-# Valeurs autorisées pour validation côté serveur
 ALLOWED_ORDER_TYPES = ('pickup', 'delivery')
 ALLOWED_PICKUP_DATES = ('today', 'tomorrow', 'after_tomorrow')
 ALLOWED_DELIVERY_SLOTS = (
     '11h-12h', '12h-13h', '13h-14h',
     '19h-20h', '20h-21h', '21h-22h',
 )
-
 
 class RestaurantWebsiteSale(WebsiteSale):
     """
@@ -34,10 +30,8 @@ class RestaurantWebsiteSale(WebsiteSale):
         sitemap=False,
     )
     def shop_payment(self, **post):
-        # Appel du parent en premier
         res = super().shop_payment(**post)
 
-        # Odoo 18 : request.cart est le panier courant
         order = getattr(request, 'cart', None)
 
         if not order:
@@ -47,7 +41,6 @@ class RestaurantWebsiteSale(WebsiteSale):
         delivery_slot = post.get('delivery_slot')
         pickup_date = post.get('pickup_date')
 
-        # Validation des valeurs reçues (sécurité : on n'écrit que des valeurs connues)
         vals = {}
         if order_type and order_type in ALLOWED_ORDER_TYPES:
             vals['order_type'] = order_type

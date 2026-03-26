@@ -5,11 +5,8 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-
-    # ── Champs de traçabilité ──────────────────────────────────────────────────
 
     x_employee_discount_applied = fields.Boolean(
         string='Remise employé appliquée',
@@ -24,8 +21,6 @@ class SaleOrder(models.Model):
         help="Détail du résultat du calcul de remise employé.",
     )
 
-    # ── Helpers de configuration ───────────────────────────────────────────────
-
     def _get_employee_tag_name(self):
         """Retourne le nom du tag employé, configurable via les paramètres système."""
         return self.env['ir.config_parameter'].sudo().get_param(
@@ -37,7 +32,6 @@ class SaleOrder(models.Model):
         Retourne le produit de remise. Le crée automatiquement s'il n'existe pas.
         Utilise un XML ID pour éviter les doublons entre installations.
         """
-        # Chercher d'abord via XML ID (créé lors de l'install)
         product = self.env.ref(
             'employee_order_discount.product_employee_discount',
             raise_if_not_found=False,
@@ -45,7 +39,6 @@ class SaleOrder(models.Model):
         if product:
             return product.with_context(active_test=False)
 
-        # Fallback : chercher par nom
         product = self.env['product.product'].sudo().search(
             [('name', '=', 'Remise Employé'), ('active', 'in', [True, False])],
             limit=1,
@@ -53,7 +46,6 @@ class SaleOrder(models.Model):
         if product:
             return product
 
-        # Création automatique si introuvable
         _logger.info("employee_order_discount: création automatique du produit 'Remise Employé'")
         product = self.env['product.product'].sudo().create({
             'name': 'Remise Employé',
@@ -66,8 +58,6 @@ class SaleOrder(models.Model):
         })
         return product
 
-    # ── Logique principale ─────────────────────────────────────────────────────
-
     def _apply_employee_discount(self):
         """
         Applique une remise totale (ligne négative) si :
@@ -77,20 +67,16 @@ class SaleOrder(models.Model):
         """
         self.ensure_one()
 
-        # Déjà appliquée → on ne retouche pas
         if self.x_employee_discount_applied:
             return
 
         tag_name = self._get_employee_tag_name()
 
-        # Vérifier le tag employé sur le client
         is_employe = any(tag.name == tag_name for tag in self.partner_id.category_id)
         if not is_employe:
             self.x_employee_discount_status = f"Client sans tag '{tag_name}' — remise non applicable."
             return
 
-        # Calculer la période du mois de la commande
-        # date_order est un Datetime — on extrait la date proprement
         if self.date_order:
             order_date = self.date_order.date()
         else:
@@ -99,7 +85,6 @@ class SaleOrder(models.Model):
         first_day = order_date.replace(day=1)
         last_day = first_day + relativedelta(months=1, days=-1)
 
-        # Compter les commandes du mois (hors annulées, hors la commande courante)
         orders_in_month = self.search_count([
             ('partner_id', '=', self.partner_id.id),
             ('date_order', '>=', fields.Datetime.to_datetime(first_day)),
@@ -117,7 +102,6 @@ class SaleOrder(models.Model):
             )
             return
 
-        # Vérifier qu'il y a des lignes à remettre
         lines_to_discount = self.order_line.filtered(
             lambda l: l.product_id and l.price_subtotal > 0
         )
@@ -125,7 +109,6 @@ class SaleOrder(models.Model):
             self.x_employee_discount_status = "Aucune ligne facturable — remise non appliquée."
             return
 
-        # Vérifier qu'une ligne de remise n'existe pas déjà
         discount_product = self._get_or_create_discount_product()
         already_discounted = self.order_line.filtered(
             lambda l: l.product_id == discount_product
@@ -135,22 +118,19 @@ class SaleOrder(models.Model):
             self.x_employee_discount_status = "Remise déjà présente sur la commande."
             return
 
-        # Calculer le montant HT total à remettre
-        # On repart du price_subtotal (= HT après remise ligne) pour être cohérent
         total_ht_to_discount = sum(lines_to_discount.mapped('price_subtotal'))
 
         if total_ht_to_discount <= 0:
             self.x_employee_discount_status = "Montant HT nul — remise non appliquée."
             return
 
-        # Ajouter la ligne de remise négative
         self.order_line = [Command.create({
             'product_id': discount_product.id,
             'name': f'Commande gratuite employé ({tag_name})',
             'product_uom_qty': 1,
             'price_unit': -total_ht_to_discount,
-            'tax_id': [Command.set([])],   # Pas de TVA sur la ligne de remise globale
-            'sequence': 999,               # Toujours en dernier
+            'tax_id': [Command.set([])],
+            'sequence': 999,
         })]
 
         self.x_employee_discount_applied = True
@@ -162,8 +142,6 @@ class SaleOrder(models.Model):
             "employee_order_discount: remise de %.2f€ HT appliquée sur commande %s (client: %s)",
             total_ht_to_discount, self.name, self.partner_id.name,
         )
-
-    # ── Hooks ORM ─────────────────────────────────────────────────────────────
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -199,5 +177,4 @@ class SaleOrder(models.Model):
         discount_lines.unlink()
         self.x_employee_discount_applied = False
         self.x_employee_discount_status = "Remise réinitialisée manuellement."
-        # Recalculer
         self._apply_employee_discount()

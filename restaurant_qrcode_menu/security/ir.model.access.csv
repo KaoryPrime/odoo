@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_restaurant_qrcode_menu_user,restaurant.qrcode.menu user,model_restaurant_qrcode_menu,base.group_user,1,1,1,0
+access_restaurant_qrcode_menu_manager,restaurant.qrcode.menu manager,model_restaurant_qrcode_menu,base.group_system,1,1,1,1

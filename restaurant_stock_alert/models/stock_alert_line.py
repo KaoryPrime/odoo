@@ -35,7 +35,7 @@ class RestaurantStockAlertLine(models.Model):
         default=fields.Datetime.now,
     )
     current_quantity = fields.Float(
-        string='Stock au moment de l alerte',
+        string="Stock au moment de l'alerte",
     )
     min_quantity = fields.Float(
         related='rule_id.min_quantity',

@@ -1,7 +1,7 @@
 {
     'name': 'Lettrage Manuel Avancé',
     'version': '18.0.1.0.0',
-    'author': 'Nathan Romeri',
+    'author': 'Kamil',
     'depends': ['account'],
     'data': [
         'security/ir.model.access.csv',
@@ -12,4 +12,3 @@
     'application': False,
     'license': 'LGPL-3'
 }
-#fjhefj

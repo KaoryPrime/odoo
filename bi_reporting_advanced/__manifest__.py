@@ -1,6 +1,7 @@
 {
     'name': 'BI Reporting Advanced',
     'version': '18.0.1.0.0',
+    'author': 'Kamil',
     'category': 'Reporting',
     'summary': 'Rapports avancés et automatisation (ventes, facturation, stocks)',
     'depends': ['base', 'sale', 'account', 'stock'],

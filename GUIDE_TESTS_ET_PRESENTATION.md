@@ -339,7 +339,7 @@ class TestMonModule(TransactionCase):
 | # | Scénario | Étapes | Résultat attendu |
 |---|----------|--------|-------------------|
 | 1 | Créer un feedback | Restaurant → Feedbacks → Créer | Le formulaire s'affiche avec tous les critères |
-| 2 | Noter sur 5 critères | Remplir : nourriture=5, service=4, ambiance=3, rapport qualité/prix=4 | La note globale = 4.0 (moyenne auto) |
+| 2 | Noter sur 4 critères | Remplir : nourriture=5, service=4, ambiance=3, rapport qualité/prix=4 | La note globale = 4.0 (moyenne auto) |
 | 3 | Vérifier le code couleur | Liste des feedbacks | Vert ≥ 4, Jaune ≥ 3, Rouge < 3 |
 | 4 | Marquer comme lu | Feedback → Marquer comme lu | Le statut passe à "Lu" |
 | 5 | Répondre | Feedback → Répondre | Le statut passe à "Répondu" |
@@ -598,7 +598,7 @@ class TestMonModule(TransactionCase):
 | 1 | Configurer l'API | Paramètres → Shipday → Saisir clé API | La clé est enregistrée |
 | 2 | Configurer le restaurant | Nom, adresse, téléphone du restaurant | Les infos sont enregistrées |
 | 3 | Envoyer une commande | Commande → Bouton "Envoyer à Shipday" | Le champ `shipday_sent` = Vrai |
-| 4 | Vérifier l'ID externe | Après envoi | L'ID Shipday est enregistré |
+| 4 | Vérifier l'ID Shipday | Après envoi | L'identifiant de commande Shipday est enregistré |
 | 5 | Erreur API | Utiliser une clé invalide → Envoyer | Le message d'erreur est affiché dans `shipday_last_error` |
 | 6 | Réessayer | Corriger → Réenvoyer | La commande est envoyée avec succès |
 | 7 | Compatible avec les créneaux | Utiliser avec `restaurant_order_slots` | Le créneau horaire est transmis à Shipday |

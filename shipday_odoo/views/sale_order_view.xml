@@ -7,10 +7,8 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
 
-            <!-- Boutons dans le header -->
             <xpath expr="//header" position="inside">
 
-                <!-- Bouton envoi initial -->
                 <button name="action_send_to_shipday"
                         type="object"
                         string="📦 Envoyer à Shipday"
@@ -18,7 +16,6 @@
                         invisible="shipday_sent"
                         confirm="Envoyer cette commande vers Shipday ?"/>
 
-                <!-- Bouton renvoi si déjà envoyé -->
                 <button name="action_reset_shipday"
                         type="object"
                         string="🔄 Renvoyer à Shipday"
@@ -26,10 +23,8 @@
 
             </xpath>
 
-            <!-- Bandeau statut Shipday -->
             <xpath expr="//div[@name='button_box']" position="before">
 
-                <!-- Envoyé avec succès -->
                 <div class="alert alert-success d-flex align-items-center gap-2 mb-0 rounded-0 border-0 border-bottom"
                      invisible="not shipday_sent">
                     <i class="fa fa-truck fa-lg"/>
@@ -41,7 +36,6 @@
                     </span>
                 </div>
 
-                <!-- Erreur dernière tentative -->
                 <div class="alert alert-danger d-flex align-items-center gap-2 mb-0 rounded-0 border-0 border-bottom"
                      invisible="not shipday_last_error or shipday_sent">
                     <i class="fa fa-exclamation-circle fa-lg"/>
@@ -53,7 +47,6 @@
 
             </xpath>
 
-            <!-- Champs cachés pour les conditions invisible= -->
             <xpath expr="//field[@name='state']" position="after">
                 <field name="shipday_sent" invisible="True"/>
                 <field name="shipday_order_id" invisible="True"/>
@@ -63,7 +56,6 @@
         </field>
     </record>
 
-    <!-- Colonne optionnelle dans la liste des commandes -->
     <record id="view_order_list_shipday" model="ir.ui.view">
         <field name="name">sale.order.shipday.list</field>
         <field name="model">sale.order</field>

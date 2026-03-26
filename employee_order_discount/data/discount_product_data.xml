@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
 
-    <!--
-        Produit de remise créé une seule fois à l'installation.
-        noupdate="1" : jamais écrasé par une mise à jour du module.
-        Type service, sans TVA, non achetable.
-    -->
     <record id="product_employee_discount_tmpl" model="product.template">
         <field name="name">Remise Employé</field>
         <field name="type">service</field>
@@ -15,9 +10,5 @@
         <field name="description_sale">Remise accordée aux employés (commande gratuite)</field>
         <field name="taxes_id" eval="[Command.set([])]"/>
     </record>
-
-    <!-- On récupère la product.product générée automatiquement via son template -->
-    <!-- Le ref employee_order_discount.product_employee_discount pointera vers
-         la product.product via le code Python _get_or_create_discount_product -->
 
 </odoo>

@@ -1,8 +1,6 @@
 <odoo>
-    <!-- Menu principal -->
     <menuitem id="bi_reporting_menu" name="BI Reporting" parent="account.menu_finance_reports"/>
 
-    <!-- Sous-menu ventes avancées -->
     <menuitem id="bi_sale_report"
               name="Ventes Avancées"
               parent="bi_reporting_menu"

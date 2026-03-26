@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- ===== VUES ALLERGEN ===== -->
-
     <record id="view_allergen_list" model="ir.ui.view">
         <field name="name">allergen.allergen.list</field>
         <field name="model">allergen.allergen</field>
@@ -67,8 +65,6 @@
         </field>
     </record>
 
-    <!-- ===== ACTION ===== -->
-
     <record id="action_allergen" model="ir.actions.act_window">
         <field name="name">Allergènes</field>
         <field name="res_model">allergen.allergen</field>
@@ -85,13 +81,6 @@
         </field>
     </record>
 
-    <!-- ===== MENU ===== -->
-
-    <!--
-        On crée notre propre entrée de menu de premier niveau.
-        On évite de dépendre d'un XML ID externe (product.menu_product_category_action
-        n'existe plus en Odoo 18), ce qui évite tout crash à l'installation.
-    -->
     <menuitem id="menu_allergen_root"
               name="Allergènes"
               web_icon="allergen_auto,static/description/icon.svg"

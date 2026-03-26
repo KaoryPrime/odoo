@@ -7,12 +7,10 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
 
-            <!-- Masquer le champ calendrier standard remplacé par le planning -->
             <field name="resource_calendar_id" position="attributes">
                 <attribute name="invisible">True</attribute>
             </field>
 
-            <!-- Insérer le planning de calendriers juste après -->
             <field name="resource_calendar_id" position="after">
                 <field
                     name="calendar_ids"
@@ -29,10 +27,5 @@
 
         </field>
     </record>
-
-    <!--
-        Note Odoo 18 : hr.employee.public ne contient plus resource_calendar_id
-        dans sa vue formulaire — bloc supprimé pour éviter le crash au parsing.
-    -->
 
 </odoo>

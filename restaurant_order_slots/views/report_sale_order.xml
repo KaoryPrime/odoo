@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!--
-        Ajout des informations de créneau sur le rapport PDF de commande.
-        t-field est la syntaxe correcte dans les rapports QWeb (≠ vues backend).
-        t-field sur un champ Selection affiche automatiquement le libellé lisible.
-    -->
     <template id="report_saleorder_document_inherit_slots"
               inherit_id="sale.report_saleorder_document"
               name="Créneaux restaurant — PDF">

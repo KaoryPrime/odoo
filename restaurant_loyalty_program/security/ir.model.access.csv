@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_loyalty_card_user,restaurant.loyalty.card user,model_restaurant_loyalty_card,base.group_user,1,1,1,0
+access_loyalty_card_manager,restaurant.loyalty.card manager,model_restaurant_loyalty_card,base.group_system,1,1,1,1
+access_loyalty_history_user,restaurant.loyalty.points.history user,model_restaurant_loyalty_points_history,base.group_user,1,1,1,0
+access_loyalty_history_manager,restaurant.loyalty.points.history manager,model_restaurant_loyalty_points_history,base.group_system,1,1,1,1

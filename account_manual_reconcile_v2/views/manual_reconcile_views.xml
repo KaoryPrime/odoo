@@ -1,0 +1,33 @@
+<odoo>
+    <record id="view_move_manual_reconcile_tree" model="ir.ui.view">
+        <field name="name">account.move.manual.reconcile.tree</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="invoice_date"/>
+                <field name="state"/>
+                <field name="lettrage_ref"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_move_manual_reconcile" model="ir.actions.act_window">
+        <field name="name">Factures Lettrées</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('lettrage_ref', '!=', False)]</field>
+    </record>
+
+    <menuitem id="menu_manual_reconcile_root"
+              name="Lettrage Manuel"
+              parent="account.menu_finance"
+              sequence="90"/>
+
+    <menuitem id="menu_manual_reconcile_factures"
+              name="Factures Lettrées"
+              parent="menu_manual_reconcile_root"
+              action="action_move_manual_reconcile"
+              sequence="20"/>
+</odoo>

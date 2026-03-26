@@ -1,0 +1,36 @@
+<odoo>
+    <data noupdate="1">
+        <record id="storage_fsprod" model="fs.storage">
+            <field name="name">FS Prod</field>
+            <field name="code">fsprod</field>
+            <field name="protocol">s3</field>
+            <field name="eval_options_from_env">True</field>
+            <field name="options">{
+                "endpoint_url": "$AWS_HOST",
+                "key": "$AWS_ACCESS_KEY_ID",
+                "secret": "$AWS_SECRET_ACCESS_KEY",
+                "client_kwargs": {
+                "region_name": "$AWS_REGION"
+                },
+                "config_kwargs": {
+                "signature_version": "s3v4",
+                "response_checksum_validation": "when_required",
+                "request_checksum_calculation": "when_required"
+                }}</field>
+            <field name="directory_path">files</field>
+            <field name="use_as_default_for_attachments">False</field>
+            <field name="use_filename_obfuscation">True</field>
+            <field name="optimizes_directory_path">True</field>
+            <field name="autovacuum_gc">True</field>
+            <field name="force_db_for_default_attachment_rules">{"image/": 51200, "application/javascript": 0, "text/css": 0}</field>
+        </record>
+
+        <record id="fstorage_sdev" model="fs.storage">
+            <field name="name">FS Dev</field>
+            <field name="code">fsdev</field>
+            <field name="protocol">odoofs</field>
+            <field name="use_as_default_for_attachments">False</field>
+            <field name="force_db_for_default_attachment_rules">{"image/": 51200, "application/javascript": 0, "text/css": 0}</field>
+        </record>
+    </data>
+</odoo>

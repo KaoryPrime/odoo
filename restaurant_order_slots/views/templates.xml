@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Injection des créneaux restaurant sur la page de paiement website_sale.
+        Odoo 18 : website_sale.payment est la bonne vue parente.
+        Bootstrap 5 : form-group → mb-3, form-control → form-select pour les <select>
+    -->
+    <template id="restaurant_order_slots_payment"
+              inherit_id="website_sale.payment"
+              name="Créneaux restaurant">
+
+        <xpath expr="//div[@id='payment_method']" position="before">
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">🕐 Informations de retrait / livraison</h5>
+                </div>
+                <div class="card-body">
+
+                    <!-- Type de commande -->
+                    <div class="mb-3">
+                        <label for="order_type" class="form-label fw-bold">
+                            Type de commande <span class="text-danger">*</span>
+                        </label>
+                        <select name="order_type" id="order_type"
+                                class="form-select" required="required">
+                            <option value="" disabled="disabled" selected="selected">
+                                — Choisir —
+                            </option>
+                            <option value="pickup">🥡 À emporter</option>
+                            <option value="delivery">🚴 Livraison</option>
+                        </select>
+                    </div>
+
+                    <!-- Jour de retrait -->
+                    <div class="mb-3">
+                        <label for="pickup_date" class="form-label fw-bold">
+                            Jour de retrait/livraison <span class="text-danger">*</span>
+                        </label>
+                        <select name="pickup_date" id="pickup_date"
+                                class="form-select" required="required">
+                            <option value="" disabled="disabled" selected="selected">
+                                — Choisir —
+                            </option>
+                            <option value="today">📅 Aujourd'hui</option>
+                            <option value="tomorrow">📅 Demain</option>
+                            <option value="after_tomorrow">📅 Après-demain</option>
+                        </select>
+                    </div>
+
+                    <!-- Créneau horaire -->
+                    <div class="mb-3">
+                        <label for="delivery_slot" class="form-label fw-bold">
+                            Créneau horaire <span class="text-danger">*</span>
+                        </label>
+                        <select name="delivery_slot" id="delivery_slot"
+                                class="form-select" required="required">
+                            <option value="" disabled="disabled" selected="selected">
+                                — Choisir —
+                            </option>
+                            <option value="11h-12h">11h – 12h</option>
+                            <option value="12h-13h">12h – 13h</option>
+                            <option value="13h-14h">13h – 14h</option>
+                            <option value="19h-20h">19h – 20h</option>
+                            <option value="20h-21h">20h – 21h</option>
+                            <option value="21h-22h">21h – 22h</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+        </xpath>
+    </template>
+
+</odoo>

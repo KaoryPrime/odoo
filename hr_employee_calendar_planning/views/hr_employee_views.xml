@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_employee_form_calendar_planning" model="ir.ui.view">
+        <field name="name">hr.employee.form.calendar.planning</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Masquer le champ calendrier standard remplacé par le planning -->
+            <field name="resource_calendar_id" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </field>
+
+            <!-- Insérer le planning de calendriers juste après -->
+            <field name="resource_calendar_id" position="after">
+                <field
+                    name="calendar_ids"
+                    context="{'default_company_id': company_id}"
+                    nolabel="1">
+                    <list editable="top">
+                        <field name="company_id" column_invisible="True"/>
+                        <field name="date_start"/>
+                        <field name="date_end"/>
+                        <field name="calendar_id"/>
+                    </list>
+                </field>
+            </field>
+
+        </field>
+    </record>
+
+    <!--
+        Note Odoo 18 : hr.employee.public ne contient plus resource_calendar_id
+        dans sa vue formulaire — bloc supprimé pour éviter le crash au parsing.
+    -->
+
+</odoo>

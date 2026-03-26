@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Vue form : bandeau + bouton recalcul sur la fiche commande ── -->
+
+    <record id="view_sale_order_employee_discount_form" model="ir.ui.view">
+        <field name="name">sale.order.employee.discount.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Bandeau sous le fil d'Ariane, avant le titre -->
+            <xpath expr="//div[@name='button_box']" position="before">
+
+                <!-- Remise appliquée avec succès -->
+                <div class="alert alert-success d-flex align-items-center gap-2 mb-0 rounded-0 border-0 border-bottom"
+                     invisible="not x_employee_discount_applied">
+                    <i class="fa fa-check-circle fa-lg"/>
+                    <span>
+                        <strong>Remise employé appliquée. </strong>
+                        <field name="x_employee_discount_status"
+                               readonly="True"
+                               nolabel="1"
+                               class="ms-2 text-muted"/>
+                    </span>
+                    <div class="ms-auto">
+                        <button name="action_reset_employee_discount"
+                                type="object"
+                                string="Recalculer"
+                                class="btn btn-sm btn-outline-success"
+                                invisible="state not in ['draft', 'sent']"/>
+                    </div>
+                </div>
+
+                <!-- Remise non appliquée mais client employé potentiel -->
+                <div class="alert alert-warning d-flex align-items-center gap-2 mb-0 rounded-0 border-0 border-bottom"
+                     invisible="x_employee_discount_applied or not x_employee_discount_status">
+                    <i class="fa fa-info-circle fa-lg"/>
+                    <span>
+                        <strong>Remise employé non appliquée. </strong>
+                        <field name="x_employee_discount_status"
+                               readonly="True"
+                               nolabel="1"
+                               class="ms-2 text-muted"/>
+                    </span>
+                </div>
+
+            </xpath>
+
+            <!-- Champs cachés nécessaires pour les conditions invisible= -->
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="x_employee_discount_applied" invisible="True"/>
+                <field name="x_employee_discount_status" invisible="True"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ── Vue list : colonne indicateur remise employé ── -->
+
+    <record id="view_sale_order_employee_discount_list" model="ir.ui.view">
+        <field name="name">sale.order.employee.discount.list</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="x_employee_discount_applied"
+                       string="Remise employé"
+                       widget="boolean_toggle"
+                       readonly="True"
+                       optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

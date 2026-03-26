@@ -1,0 +1,53 @@
+<odoo>
+    <!-- Vue LISTE -->
+    <record id="bi_sale_order_report_tree_view" model="ir.ui.view">
+        <field name="name">bi.sale.order.report.tree</field>
+        <field name="model">bi.sale.order.report</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="date_order"/>
+                <field name="client"/>
+                <field name="sale_order_type"/>
+                <field name="total"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vue GRAPHIQUE -->
+    <record id="bi_sale_order_report_graph_view" model="ir.ui.view">
+        <field name="name">bi.sale.order.report.graph</field>
+        <field name="model">bi.sale.order.report</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <field name="sale_order_type" type="row"/>
+                <field name="total" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Vue PIVOT -->
+    <record id="bi_sale_order_report_pivot_view" model="ir.ui.view">
+        <field name="name">bi.sale.order.report.pivot</field>
+        <field name="model">bi.sale.order.report</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="client" type="row"/>
+                <field name="sale_order_type" type="col"/>
+                <field name="total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ACTION pour afficher dans le menu -->
+    <record id="bi_sale_order_report_action" model="ir.actions.act_window">
+        <field name="name">Rapport Avancé des Ventes</field>
+        <field name="res_model">bi.sale.order.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('bi_sale_order_report_tree_view')}),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('bi_sale_order_report_pivot_view')}),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('bi_sale_order_report_graph_view')})
+        ]"/>
+    </record>
+</odoo>

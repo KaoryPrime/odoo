@@ -1,0 +1,26 @@
+<odoo>
+  <record id="view_purchase_order_form_ringeard" model="ir.ui.view">
+    <field name="name">purchase.order.form.ringeard</field>
+    <field name="model">purchase.order</field>
+    <field name="inherit_id" ref="purchase.purchase_order_form"/>
+    <field name="arch" type="xml">
+
+      <!-- On injecte dans le header -->
+      <xpath expr="//header" position="inside">
+
+        <!-- Champs nécessaires pour les conditions -->
+        <field name="vat_category" invisible="1"/>
+        <field name="x_validated_by_ringeard" invisible="1"/>
+
+        <!-- Bouton de validation spécifique à Mr Ringeard -->
+        <button name="action_validate_ringeard"
+                type="object"
+                string="Validation membre personnel RH"
+                class="btn-primary"
+                groups="supplier_vat_validation_final.group_validateur"
+                invisible="vat_category != 'vat3' or x_validated_by_ringeard"/>
+      </xpath>
+
+    </field>
+  </record>
+</odoo>

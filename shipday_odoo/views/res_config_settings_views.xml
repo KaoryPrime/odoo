@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form_shipday" model="ir.ui.view">
+        <field name="name">res.config.settings.shipday.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.action_general_configuration"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='integration_settings']" position="before">
+                <div id="shipday_settings" class="app_settings_block">
+                    <h2>Shipday — Dispatch livraison</h2>
+                    <div class="row mt16">
+                        <div class="col-12 col-lg-6">
+                            <div class="o_setting_box">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Clé API Shipday</span>
+                                    <div class="text-muted">
+                                        Disponible dans votre tableau de bord Shipday → Settings → API Key.
+                                    </div>
+                                    <div class="content-group mt8">
+                                        <field name="shipday_api_key"
+                                               password="True"
+                                               placeholder="Votre clé API Shipday…"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="o_setting_box">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Informations restaurant</span>
+                                    <div class="content-group mt8">
+                                        <div class="row">
+                                            <label for="shipday_restaurant_name"
+                                                   class="col-lg-4 o_light_label"/>
+                                            <field name="shipday_restaurant_name"
+                                                   class="col-lg-8"
+                                                   placeholder="Nom du restaurant"/>
+                                        </div>
+                                        <div class="row">
+                                            <label for="shipday_restaurant_address"
+                                                   class="col-lg-4 o_light_label"/>
+                                            <field name="shipday_restaurant_address"
+                                                   class="col-lg-8"
+                                                   placeholder="Adresse complète"/>
+                                        </div>
+                                        <div class="row">
+                                            <label for="shipday_restaurant_phone"
+                                                   class="col-lg-4 o_light_label"/>
+                                            <field name="shipday_restaurant_phone"
+                                                   class="col-lg-8"
+                                                   placeholder="Téléphone"/>
+                                        </div>
+                                        <div class="row">
+                                            <label for="shipday_default_delivery_delay"
+                                                   class="col-lg-4 o_light_label"/>
+                                            <field name="shipday_default_delivery_delay"
+                                                   class="col-lg-8"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,1 @@
+{'name': 'Product BOM Filter', 'version': '18.0.1.0.0', 'summary': 'Ajoute des filtres pour les produits avec ou sans nomenclature (BOM)', 'author': 'Goutier', 'category': 'Inventory', 'depends': ['product', 'mrp'], 'data': ['views/product_template_views.xml'], 'installable': True, 'application': False, 'license': 'LGPL-3'}

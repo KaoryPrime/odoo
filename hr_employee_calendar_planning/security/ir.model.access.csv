@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_calendar_user,hr.employee.calendar user,model_hr_employee_calendar,base.group_user,1,0,0,0
+access_hr_employee_calendar_manager,hr.employee.calendar manager,model_hr_employee_calendar,hr.group_hr_user,1,1,1,1

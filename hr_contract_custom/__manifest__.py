@@ -1,0 +1,1 @@
+{'name': 'HR Contract Custom', 'version': '18.0.1.0.0', 'category': 'Human Resources', 'summary': 'Customize HR Contract to allow PDF printing', 'author': 'Goutier', 'depends': ['hr_contract'], 'data': ['views/contract_view.xml', 'report/contract_report.xml'], 'installable': True, 'application': False, 'license': 'LGPL-3'}

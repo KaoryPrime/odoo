@@ -1,0 +1,13 @@
+<odoo>
+    <record id="view_partner_form_vat_category" model="ir.ui.view">
+    <field name="name">res.partner.form.vat_category</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="priority">5</field>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='vat']" position="after">
+        <label for="vat_category" string="Catégorie VAT"/>
+        <field name="vat_category"/>
+    </xpath></field>
+</record>
+</odoo>

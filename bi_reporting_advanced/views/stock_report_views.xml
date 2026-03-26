@@ -1,0 +1,7 @@
+<odoo>
+    <record id="stock_report_views_action" model="ir.actions.act_window">
+        <field name="name">Stock Report</field>
+        <field name="res_model">bi.unfinished.product.stock</field>
+        <field name="view_mode">list,pivot,graph</field>
+    </record>
+</odoo>

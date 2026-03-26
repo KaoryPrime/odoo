@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===== VUES ALLERGEN ===== -->
+
+    <record id="view_allergen_list" model="ir.ui.view">
+        <field name="name">allergen.allergen.list</field>
+        <field name="model">allergen.allergen</field>
+        <field name="arch" type="xml">
+            <list string="Allergènes" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="icon"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="product_count" string="Nb produits"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_allergen_form" model="ir.ui.view">
+        <field name="name">allergen.allergen.form</field>
+        <field name="model">allergen.allergen</field>
+        <field name="arch" type="xml">
+            <form string="Allergène">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_products"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-cube">
+                            <field name="product_count" widget="statinfo" string="Produits"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="icon"/>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="color" widget="color_picker"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Description réglementaire de cet allergène…"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_allergen_search" model="ir.ui.view">
+        <field name="name">allergen.allergen.search</field>
+        <field name="model">allergen.allergen</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher un allergène">
+                <field name="name"/>
+                <field name="code"/>
+                <filter string="Actifs" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archivés" name="archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ===== ACTION ===== -->
+
+    <record id="action_allergen" model="ir.actions.act_window">
+        <field name="name">Allergènes</field>
+        <field name="res_model">allergen.allergen</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_allergen_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier allergène
+            </p>
+            <p>
+                Les 14 allergènes réglementaires européens sont pré-chargés.
+                Vous pouvez en ajouter d'autres selon vos besoins.
+            </p>
+        </field>
+    </record>
+
+    <!-- ===== MENU ===== -->
+
+    <!--
+        On crée notre propre entrée de menu de premier niveau.
+        On évite de dépendre d'un XML ID externe (product.menu_product_category_action
+        n'existe plus en Odoo 18), ce qui évite tout crash à l'installation.
+    -->
+    <menuitem id="menu_allergen_root"
+              name="Allergènes"
+              web_icon="allergen_auto,static/description/icon.svg"
+              sequence="99"/>
+
+    <menuitem id="menu_allergen_list"
+              name="Liste des allergènes"
+              parent="menu_allergen_root"
+              action="action_allergen"
+              sequence="10"/>
+
+</odoo>

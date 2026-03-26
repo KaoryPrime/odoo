@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_livreur,sale.order,sale.model_sale_order,livreur.group_livreur,1,0,0,0
+access_sale_order_line_livreur,sale.order.line,sale.model_sale_order_line,livreur.group_livreur,1,0,0,0
+access_sale_report,sale.report,sale.model_sale_report,livreur.group_livreur,1,0,0,0

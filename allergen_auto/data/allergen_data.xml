@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Les 14 allergènes majeurs réglementés par le règlement UE n°1169/2011 -->
+
+    <record id="allergen_gluten" model="allergen.allergen">
+        <field name="name">Gluten</field>
+        <field name="code">gluten</field>
+        <field name="icon">🌾</field>
+        <field name="sequence">1</field>
+        <field name="description">Céréales contenant du gluten : blé, seigle, orge, avoine, épeautre, kamut et leurs produits hybridés.</field>
+    </record>
+
+    <record id="allergen_crustaces" model="allergen.allergen">
+        <field name="name">Crustacés</field>
+        <field name="code">crustaces</field>
+        <field name="icon">🦐</field>
+        <field name="sequence">2</field>
+        <field name="description">Crustacés et produits à base de crustacés.</field>
+    </record>
+
+    <record id="allergen_oeufs" model="allergen.allergen">
+        <field name="name">Œufs</field>
+        <field name="code">oeufs</field>
+        <field name="icon">🥚</field>
+        <field name="sequence">3</field>
+        <field name="description">Œufs et produits à base d'œufs.</field>
+    </record>
+
+    <record id="allergen_poissons" model="allergen.allergen">
+        <field name="name">Poissons</field>
+        <field name="code">poissons</field>
+        <field name="icon">🐟</field>
+        <field name="sequence">4</field>
+        <field name="description">Poissons et produits à base de poissons.</field>
+    </record>
+
+    <record id="allergen_arachides" model="allergen.allergen">
+        <field name="name">Arachides</field>
+        <field name="code">arachides</field>
+        <field name="icon">🥜</field>
+        <field name="sequence">5</field>
+        <field name="description">Arachides et produits à base d'arachides.</field>
+    </record>
+
+    <record id="allergen_soja" model="allergen.allergen">
+        <field name="name">Soja</field>
+        <field name="code">soja</field>
+        <field name="icon">🫘</field>
+        <field name="sequence">6</field>
+        <field name="description">Soja et produits à base de soja.</field>
+    </record>
+
+    <record id="allergen_lait" model="allergen.allergen">
+        <field name="name">Lait</field>
+        <field name="code">lait</field>
+        <field name="icon">🥛</field>
+        <field name="sequence">7</field>
+        <field name="description">Lait et produits à base de lait (y compris le lactose).</field>
+    </record>
+
+    <record id="allergen_fruits_a_coque" model="allergen.allergen">
+        <field name="name">Fruits à coque</field>
+        <field name="code">fruits_coque</field>
+        <field name="icon">🌰</field>
+        <field name="sequence">8</field>
+        <field name="description">Noix, amandes, noisettes, noix de cajou, noix de pécan, pistaches, noix du Brésil, noix de macadamia.</field>
+    </record>
+
+    <record id="allergen_celeri" model="allergen.allergen">
+        <field name="name">Céleri</field>
+        <field name="code">celeri</field>
+        <field name="icon">🥬</field>
+        <field name="sequence">9</field>
+        <field name="description">Céleri et produits à base de céleri.</field>
+    </record>
+
+    <record id="allergen_moutarde" model="allergen.allergen">
+        <field name="name">Moutarde</field>
+        <field name="code">moutarde</field>
+        <field name="icon">🌿</field>
+        <field name="sequence">10</field>
+        <field name="description">Moutarde et produits à base de moutarde.</field>
+    </record>
+
+    <record id="allergen_sesame" model="allergen.allergen">
+        <field name="name">Sésame</field>
+        <field name="code">sesame</field>
+        <field name="icon">🌱</field>
+        <field name="sequence">11</field>
+        <field name="description">Graines de sésame et produits à base de graines de sésame.</field>
+    </record>
+
+    <record id="allergen_so2" model="allergen.allergen">
+        <field name="name">Dioxyde de soufre et sulfites</field>
+        <field name="code">so2_sulfites</field>
+        <field name="icon">🍷</field>
+        <field name="sequence">12</field>
+        <field name="description">Dioxyde de soufre et sulfites en concentrations de plus de 10 mg/kg ou 10 mg/litre.</field>
+    </record>
+
+    <record id="allergen_lupin" model="allergen.allergen">
+        <field name="name">Lupin</field>
+        <field name="code">lupin</field>
+        <field name="icon">🌼</field>
+        <field name="sequence">13</field>
+        <field name="description">Lupin et produits à base de lupin.</field>
+    </record>
+
+    <record id="allergen_mollusques" model="allergen.allergen">
+        <field name="name">Mollusques</field>
+        <field name="code">mollusques</field>
+        <field name="icon">🦪</field>
+        <field name="sequence">14</field>
+        <field name="description">Mollusques et produits à base de mollusques.</field>
+    </record>
+
+</odoo>

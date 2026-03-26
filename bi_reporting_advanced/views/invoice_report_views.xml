@@ -1,0 +1,7 @@
+<odoo>
+    <record id="invoice_report_views_action" model="ir.actions.act_window">
+        <field name="name">Invoice Report</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">list,pivot,graph</field>
+    </record>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_product_template_allergen_form" model="ir.ui.view">
+        <field name="name">product.template.allergen.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+
+            <notebook position="inside">
+                <page string="Allergènes" name="allergens">
+                    <div class="alert alert-info mb-3" invisible="not allergen_computed">
+                        <i class="fa fa-info-circle me-2"/>
+                        Ce produit possède une nomenclature (BoM). Ses allergènes sont
+                        <strong>calculés automatiquement</strong> depuis ses composants.
+                    </div>
+                    <div class="alert alert-warning mb-3" invisible="allergen_computed">
+                        <i class="fa fa-edit me-2"/>
+                        Aucune nomenclature détectée. Vous pouvez saisir les allergènes
+                        <strong>manuellement</strong> pour cette matière première.
+                    </div>
+                    <field name="allergen_computed" invisible="1"/>
+                    <field name="allergen_ids"
+                           widget="many2many_tags"
+                           options="{'color_field': 'color'}"
+                           placeholder="Sélectionner les allergènes…"/>
+                </page>
+            </notebook>
+
+        </field>
+    </record>
+
+</odoo>

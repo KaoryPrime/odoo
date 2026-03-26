@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="resource_calendar_form_calendar_planning" model="ir.ui.view">
+        <field name="name">resource.calendar.form.calendar.planning</field>
+        <field name="model">resource.calendar</field>
+        <field name="inherit_id" ref="resource.resource_calendar_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Stat button : nb employés utilisant ce calendrier -->
+            <xpath expr="//sheet" position="before">
+                <div class="oe_button_box" name="button_box">
+                    <button
+                        name="action_view_employees"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-users"
+                        invisible="employee_count == 0">
+                        <field name="employee_count" widget="statinfo" string="Employés"/>
+                    </button>
+                </div>
+            </xpath>
+
+            <!-- Onglet : employés utilisant ce calendrier comme planning -->
+            <notebook position="inside">
+                <page name="employee_calendar" string="Plannings employés">
+                    <field name="employee_calendar_ids">
+                        <list editable="top" create="0">
+                            <field name="company_id" column_invisible="True"/>
+                            <field name="employee_id"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </list>
+                    </field>
+                </page>
+            </notebook>
+
+        </field>
+    </record>
+
+</odoo>

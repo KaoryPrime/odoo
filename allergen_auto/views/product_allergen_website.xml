@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="product_allergen_display" inherit_id="website_sale.product" name="Affichage allergènes produit">
+        <xpath expr="//div[@id='product_details']" position="inside">
+
+            <t t-if="product.allergen_ids">
+                <div class="o_allergen_block mt-4 p-3 rounded-3 border border-warning bg-warning bg-opacity-10">
+
+                    <!-- Titre avec icône réglementaire -->
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="fs-5 me-2">⚠️</span>
+                        <strong class="text-warning-emphasis fs-6">Contient des allergènes</strong>
+                    </div>
+
+                    <!-- Badges des allergènes -->
+                    <div class="d-flex flex-wrap gap-2">
+                        <t t-foreach="product.allergen_ids" t-as="allergen">
+                            <span class="badge rounded-pill border border-warning text-warning-emphasis bg-white px-3 py-2 fs-6 d-flex align-items-center gap-1">
+                                <t t-if="allergen.icon">
+                                    <t t-out="allergen.icon"/>
+                                </t>
+                                <t t-out="allergen.name"/>
+                            </span>
+                        </t>
+                    </div>
+
+                    <!-- Note réglementaire -->
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            Allergènes déclarés conformément au règlement UE n°1169/2011.
+                        </small>
+                    </div>
+
+                </div>
+            </t>
+
+        </xpath>
+    </template>
+
+</odoo>

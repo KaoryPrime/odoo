@@ -1,0 +1,1 @@
+{'name': 'Livreur', 'version': '18.0.1.0.0', 'category': 'Sales', 'summary': 'Module pour permettre aux livreurs de voir uniquement le menu Commandes dans Ventes', 'author': 'Goutier', 'depends': ['sale'], 'data': ['security/livreur_security.xml', 'security/ir.model.access.csv', 'views/sale_order_view.xml'], 'installable': True, 'application': True, 'license': 'LGPL-3'}

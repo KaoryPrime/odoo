@@ -1,0 +1,76 @@
+<odoo>
+    <data>
+        <menuitem id="menu_rapport_bi_root" name="Rapport BI" sequence="10"/>
+
+        <record id="action_rapport_stocks" model="ir.actions.act_window">
+            <field name="name">Rapport Stocks</field>
+            <field name="res_model">bi.rapport</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+            <field name="context">{'default_rapport_type': 'stocks', 'default_name': 'Rapport Stocks'}</field>
+        </record>
+        <menuitem id="menu_rapport_bi_stocks"
+                  name="Rapport Stocks"
+                  parent="menu_rapport_bi_root"
+                  action="action_rapport_stocks"/>
+
+        <record id="action_rapport_factures" model="ir.actions.act_window">
+            <field name="name">Rapport Facturation</field>
+            <field name="res_model">bi.rapport</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+            <field name="context">{'default_rapport_type': 'factures', 'default_name': 'Rapport Facturation'}</field>
+        </record>
+        <menuitem id="menu_rapport_bi_factures"
+                  name="Rapport Facturation"
+                  parent="menu_rapport_bi_root"
+                  action="action_rapport_factures"/>
+
+        <record id="action_rapport_vente" model="ir.actions.act_window">
+            <field name="name">Rapport Vente</field>
+            <field name="res_model">bi.rapport</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+            <field name="context">{'default_rapport_type': 'vente', 'default_name': 'Rapport Vente'}</field>
+        </record>
+        <menuitem id="menu_rapport_bi_vente"
+                  name="Rapport Vente"
+                  parent="menu_rapport_bi_root"
+                  action="action_rapport_vente"/>
+
+        <record id="view_bi_rapport_form" model="ir.ui.view">
+            <field name="name">bi.rapport.form</field>
+            <field name="model">bi.rapport</field>
+            <field name="arch" type="xml">
+                <form string="Rapport BI" create="false" edit="false">
+                    <header>
+                        <field name="name"/>
+                    </header>
+<sheet>
+    <field name="rapport_type" invisible="1"/>
+    <div class="oe_title">
+        <field name="name" readonly="1"/>
+    </div>
+    <div>
+        <div invisible="rapport_type != 'stocks'">
+            <iframe width="100%" height="600"
+                    src="https://app.powerbi.com/view?r=eyJrIjoiYTRhZTg3OTktZTRiNC00MDVlLWFjMTMtMjNmYzdjYTJmM2ZjIiwidCI6ImUyMWU5NzgzLWQwYTAtNDhmOC04NTBlLTBiMDgxYjQ2ZDc4OCIsImMiOjh9"
+                    frameborder="0" allowfullscreen="true"/>
+        </div>
+        <div invisible="rapport_type != 'factures'">
+            <iframe width="100%" height="600"
+                    src="https://app.powerbi.com/view?r=eyJrIjoiNjAxOGRjNWMtMjUwOS00ZDI1LTlhNmMtNmFjZjFlZTU5MDllIiwidCI6ImUyMWU5NzgzLWQwYTAtNDhmOC04NTBlLTBiMDgxYjQ2ZDc4OCIsImMiOjh9"
+                    frameborder="0" allowfullscreen="true"/>
+        </div>
+        <div invisible="rapport_type != 'vente'">
+            <iframe width="100%" height="600"
+                    src="https://app.powerbi.com/view?r=eyJrIjoiYjU4NjI5ZTktYTJmYy00NTUxLWJmMjgtZThiNGRmZjAxMzc1IiwidCI6ImUyMWU5NzgzLWQwYTAtNDhmOC04NTBlLTBiMDgxYjQ2ZDc4OCIsImMiOjh9"
+                    frameborder="0" allowfullscreen="true"/>
+        </div>
+    </div>
+</sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

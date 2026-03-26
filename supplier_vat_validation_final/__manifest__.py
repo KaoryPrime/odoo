@@ -1,0 +1,1 @@
+{'name': 'Supplier VAT Validation Final', 'version': '18.0.1.0.0', 'depends': ['purchase'], 'author': 'Goutier', 'category': 'Purchases', 'description': 'Gestion complète VAT fournisseurs.', 'data': ['security/groups.xml', 'views/purchase_order_views.xml', 'views/res_partner_views.xml'], 'installable': True, 'license': 'LGPL-3'}

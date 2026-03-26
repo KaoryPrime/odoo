@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Menu racine Shifts — autonome pour éviter toute dépendance
+        à un XML ID externe fragile (hr.menu_hr_root a changé en v18).
+    -->
+    <menuitem id="menu_hr_shift_root"
+              name="Shifts"
+              web_icon="hr_shift_custom,static/description/icon.svg"
+              sequence="95"/>
+
+    <menuitem id="menu_hr_shift_shifts"
+              name="Planning des shifts"
+              parent="menu_hr_shift_root"
+              action="action_hr_shift"
+              sequence="10"/>
+
+    <menuitem id="menu_hr_shift_config"
+              name="Configuration RH"
+              parent="menu_hr_shift_root"
+              action="action_hr_shift_config"
+              sequence="90"
+              groups="hr_shift_custom.group_hr_shift_manager"/>
+
+</odoo>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_contract" model="ir.actions.report">
+        <field name="name">Contrat de Travail (PDF)</field>
+        <field name="model">hr.contract</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_contract_custom.report_contract</field>
+        <field name="report_file">hr_contract_custom.report_contract</field>
+        <field name="print_report_name">'Contract %s' % (object.employee_id.name or 'Contrat')</field>
+        <field name="binding_model_id" ref="hr_contract.model_hr_contract"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_contract_html" model="ir.actions.report">
+        <field name="name">Contrat de Travail (HTML)</field>
+        <field name="model">hr.contract</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">hr_contract_custom.report_contract</field>
+        <field name="report_file">hr_contract_custom.report_contract</field>
+        <field name="print_report_name">'Contract %s' % (object.employee_id.name or 'Contrat')</field>
+    </record>
+
+    <template id="report_contract">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="object">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Contrat de Travail : <t t-esc="object.employee_id.name or ''"/></h2>
+
+                        <p>Poste : <t t-esc="object.job_id.name or ''"/></p>
+                        <p>Heures contractuelles : <t t-esc="object.resource_calendar_id.name or ''"/></p>
+                        <p>Téléphone : <t t-esc="object.employee_id.work_phone or ''"/></p>
+                        <p>Email : <t t-esc="object.employee_id.work_email or ''"/></p>
+
+                        <p>Date de début : <t t-esc="object.date_start or ''"/></p>
+                        <p>Date de fin : <t t-esc="object.date_end or 'Indéterminée'"/></p>
+
+                        <div class="signature-section" style="margin-top: 50px;">
+                            <p>Signature de l'employé : __________________________</p>
+                            <p>Date : __________________________</p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_address_phone_validation" inherit_id="website_sale.address">
+        <xpath expr="//input[@name='phone']" position="attributes">
+            <attribute name="pattern">^(0|\+33)[1-9]\d{8}$</attribute>
+            <attribute name="title">Le numéro doit comporter 10 chiffres et commencer par 0 ou +33.</attribute>
+        </xpath>
+    </template>
+</odoo>

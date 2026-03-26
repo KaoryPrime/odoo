@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="hr_shift_config_default" model="hr.shift.config">
+        <field name="name">Configuration par défaut</field>
+        <field name="min_break_minutes">30</field>
+        <field name="max_hours_per_day">8.0</field>
+        <field name="min_shift_duration">2.0</field>
+        <field name="max_shift_duration">4.0</field>
+        <field name="enforce_max_hours">True</field>
+        <field name="enforce_min_break">True</field>
+    </record>
+
+</odoo>

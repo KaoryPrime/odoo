@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Paramètres Shipday par défaut — modifiables dans Paramètres → Shipday -->
+    <record id="shipday_param_restaurant_name" model="ir.config_parameter">
+        <field name="key">shipday_odoo.restaurant_name</field>
+        <field name="value">Mon Restaurant</field>
+    </record>
+
+    <record id="shipday_param_delivery_delay" model="ir.config_parameter">
+        <field name="key">shipday_odoo.delivery_delay</field>
+        <field name="value">30</field>
+    </record>
+
+</odoo>

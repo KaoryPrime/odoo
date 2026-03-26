@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_kitchen_analytics_line_user,kitchen.analytics.line user,model_kitchen_analytics_line,base.group_user,1,1,1,0
+access_kitchen_analytics_line_manager,kitchen.analytics.line manager,model_kitchen_analytics_line,base.group_system,1,1,1,1

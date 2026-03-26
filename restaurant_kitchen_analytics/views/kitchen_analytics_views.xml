@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ══════════════════════════════════════════════
+         VUE FORMULAIRE
+    ══════════════════════════════════════════════ -->
+    <record id="view_kitchen_analytics_form" model="ir.ui.view">
+        <field name="name">kitchen.analytics.line.form</field>
+        <field name="model">kitchen.analytics.line</field>
+        <field name="arch" type="xml">
+            <form string="Ligne Analytique Cuisine">
+                <header>
+                    <button name="action_start"
+                            string="Démarrer"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'pending'"/>
+                    <button name="action_deliver"
+                            string="Livrer"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'in_progress'"/>
+                    <button name="action_cancel"
+                            string="Annuler"
+                            type="object"
+                            invisible="state not in ['pending', 'in_progress']"/>
+                    <button name="action_reset_pending"
+                            string="Remettre en attente"
+                            type="object"
+                            invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="pending,in_progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="True"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="Commande">
+                            <field name="sale_order_id"/>
+                            <field name="partner_id" readonly="True"/>
+                            <field name="product_id"/>
+                        </group>
+                        <group string="Horodatages">
+                            <field name="order_datetime"/>
+                            <field name="delivery_datetime"
+                                   invisible="state not in ['in_progress', 'done']"/>
+                            <field name="preparation_time_display" readonly="True"
+                                   invisible="not preparation_time_display or preparation_time_display == '—'"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Quantités">
+                            <field name="qty_ordered"/>
+                            <field name="qty_delivered"
+                                   invisible="state not in ['in_progress', 'done']"/>
+                            <field name="qty_variance" readonly="True"
+                                   invisible="state != 'done'"/>
+                        </group>
+                        <group string="Analytique">
+                            <field name="order_date" readonly="True"/>
+                            <field name="preparation_time" readonly="True"
+                                   invisible="preparation_time == 0"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════
+         VUE LISTE
+    ══════════════════════════════════════════════ -->
+    <record id="view_kitchen_analytics_list" model="ir.ui.view">
+        <field name="name">kitchen.analytics.line.list</field>
+        <field name="model">kitchen.analytics.line</field>
+        <field name="arch" type="xml">
+            <list string="Analytique Cuisine"
+                  decoration-success="state == 'done'"
+                  decoration-info="state == 'in_progress'"
+                  decoration-muted="state == 'cancelled'"
+                  decoration-warning="state == 'pending'">
+                <field name="order_datetime"/>
+                <field name="sale_order_id"/>
+                <field name="partner_id" optional="show"/>
+                <field name="product_id"/>
+                <field name="qty_ordered"/>
+                <field name="qty_delivered" optional="show"/>
+                <field name="qty_variance" optional="show"/>
+                <field name="preparation_time_display" string="Durée"/>
+                <field name="preparation_time" column_invisible="True"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"
+                       decoration-info="state == 'in_progress'"
+                       decoration-warning="state == 'pending'"
+                       decoration-danger="state == 'cancelled'"/>
+                <field name="color" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════
+         VUE PIVOT — Tableau de bord croisé
+    ══════════════════════════════════════════════ -->
+    <record id="view_kitchen_analytics_pivot" model="ir.ui.view">
+        <field name="name">kitchen.analytics.line.pivot</field>
+        <field name="model">kitchen.analytics.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Tableau de bord cuisine" disable_linking="False">
+                <field name="order_date" type="row" interval="day"/>
+                <field name="product_id" type="col"/>
+                <field name="preparation_time" type="measure" string="Temps moyen (min)"/>
+                <field name="qty_ordered" type="measure"/>
+                <field name="qty_delivered" type="measure"/>
+                <field name="qty_variance" type="measure" string="Écart"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════
+         VUE GRAPHIQUE
+    ══════════════════════════════════════════════ -->
+    <record id="view_kitchen_analytics_graph" model="ir.ui.view">
+        <field name="name">kitchen.analytics.line.graph</field>
+        <field name="model">kitchen.analytics.line</field>
+        <field name="arch" type="xml">
+            <graph string="Analytique Cuisine" type="bar" stacked="False">
+                <field name="product_id" type="row"/>
+                <field name="preparation_time" type="measure" string="Temps de préparation (min)"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════
+         VUE RECHERCHE
+    ══════════════════════════════════════════════ -->
+    <record id="view_kitchen_analytics_search" model="ir.ui.view">
+        <field name="name">kitchen.analytics.line.search</field>
+        <field name="model">kitchen.analytics.line</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher">
+                <field name="sale_order_id"/>
+                <field name="product_id"/>
+                <field name="partner_id"/>
+                <separator/>
+                <filter string="En attente" name="pending"
+                        domain="[('state', '=', 'pending')]"/>
+                <filter string="En préparation" name="in_progress"
+                        domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Livrés" name="done"
+                        domain="[('state', '=', 'done')]"/>
+                <filter string="Annulés" name="cancelled"
+                        domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="Aujourd'hui" name="today"
+                        domain="[('order_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Grouper par">
+                    <filter string="Plat" name="group_product"
+                            context="{'group_by': 'product_id'}"/>
+                    <filter string="Client" name="group_partner"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter string="Statut" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                    <filter string="Date" name="group_date"
+                            context="{'group_by': 'order_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════
+         ACTIONS
+    ══════════════════════════════════════════════ -->
+    <record id="action_kitchen_analytics" model="ir.actions.act_window">
+        <field name="name">Tableau de bord Cuisine</field>
+        <field name="res_model">kitchen.analytics.line</field>
+        <field name="view_mode">list,pivot,graph,form</field>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune ligne analytique pour le moment
+            </p>
+            <p>
+                Créez une ligne pour chaque plat commandé afin de suivre
+                les temps de préparation et les quantités servies.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_kitchen_analytics_orders" model="ir.actions.act_window">
+        <field name="name">Commandes Cuisine</field>
+        <field name="res_model">kitchen.analytics.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_pending': 1, 'search_default_in_progress': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune commande en cours
+            </p>
+            <p>
+                Ajoutez les plats commandés pour les suivre en cuisine.
+            </p>
+        </field>
+    </record>
+
+</odoo>

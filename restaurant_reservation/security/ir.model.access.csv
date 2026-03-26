@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_restaurant_reservation_user,restaurant.reservation user,model_restaurant_reservation,base.group_user,1,1,1,0
+access_restaurant_reservation_manager,restaurant.reservation manager,model_restaurant_reservation,base.group_system,1,1,1,1
+access_restaurant_table_user,restaurant.table user,model_restaurant_table,base.group_user,1,1,1,0
+access_restaurant_table_manager,restaurant.table manager,model_restaurant_table,base.group_system,1,1,1,1

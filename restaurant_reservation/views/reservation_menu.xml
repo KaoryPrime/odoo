@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_restaurant_reservation_root"
+              name="Réservations"
+              sequence="86"/>
+
+    <menuitem id="menu_restaurant_reservation_planning"
+              name="Planning"
+              parent="menu_restaurant_reservation_root"
+              action="action_restaurant_reservation"
+              sequence="10"/>
+
+    <menuitem id="menu_restaurant_reservation_tables"
+              name="Tables"
+              parent="menu_restaurant_reservation_root"
+              action="action_restaurant_table"
+              sequence="20"/>
+
+</odoo>

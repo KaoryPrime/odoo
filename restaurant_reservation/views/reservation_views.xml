@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_restaurant_table_form" model="ir.ui.view">
+        <field name="name">restaurant.table.form</field>
+        <field name="model">restaurant.table</field>
+        <field name="arch" type="xml">
+            <form string="Table">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Nom de la table"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="capacity"/>
+                            <field name="zone"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_restaurant_table_list" model="ir.ui.view">
+        <field name="name">restaurant.table.list</field>
+        <field name="model">restaurant.table</field>
+        <field name="arch" type="xml">
+            <list string="Tables">
+                <field name="name"/>
+                <field name="capacity"/>
+                <field name="zone"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_restaurant_table" model="ir.actions.act_window">
+        <field name="name">Tables</field>
+        <field name="res_model">restaurant.table</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_restaurant_reservation_form" model="ir.ui.view">
+        <field name="name">restaurant.reservation.form</field>
+        <field name="model">restaurant.reservation</field>
+        <field name="arch" type="xml">
+            <form string="Réservation">
+                <header>
+                    <button name="action_confirm"
+                            string="Confirmer"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_seat"
+                            string="Installer"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_done"
+                            string="Terminer"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'seated'"/>
+                    <button name="action_cancel"
+                            string="Annuler"
+                            type="object"
+                            invisible="state not in ['draft', 'confirmed', 'seated']"/>
+                    <button name="action_reset_draft"
+                            string="Remettre en brouillon"
+                            type="object"
+                            invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,seated,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="True"/></h1>
+                    </div>
+                    <group>
+                        <group string="Client">
+                            <field name="partner_id"/>
+                            <field name="phone" readonly="True"/>
+                            <field name="email" readonly="True"/>
+                        </group>
+                        <group string="Réservation">
+                            <field name="reservation_date"/>
+                            <field name="reservation_time"/>
+                            <field name="nb_guests"/>
+                            <field name="duration"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Table">
+                            <field name="table_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="note" placeholder="Notes internes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_restaurant_reservation_list" model="ir.ui.view">
+        <field name="name">restaurant.reservation.list</field>
+        <field name="model">restaurant.reservation</field>
+        <field name="arch" type="xml">
+            <list string="Réservations"
+                  decoration-success="state == 'done'"
+                  decoration-info="state == 'confirmed'"
+                  decoration-muted="state == 'cancelled'"
+                  decoration-warning="state == 'draft'"
+                  decoration-danger="state == 'seated'">
+                <field name="reservation_date"/>
+                <field name="reservation_time"/>
+                <field name="partner_id"/>
+                <field name="phone" optional="show"/>
+                <field name="nb_guests"/>
+                <field name="table_id" optional="show"/>
+                <field name="duration" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"
+                       decoration-info="state == 'confirmed'"
+                       decoration-warning="state == 'draft'"
+                       decoration-danger="state == 'cancelled'"/>
+                <field name="color" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_restaurant_reservation_search" model="ir.ui.view">
+        <field name="name">restaurant.reservation.search</field>
+        <field name="model">restaurant.reservation</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher">
+                <field name="partner_id"/>
+                <field name="phone"/>
+                <field name="table_id"/>
+                <separator/>
+                <filter string="Brouillon" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Confirmé" name="confirmed"
+                        domain="[('state', '=', 'confirmed')]"/>
+                <filter string="Installé" name="seated"
+                        domain="[('state', '=', 'seated')]"/>
+                <filter string="Terminé" name="done"
+                        domain="[('state', '=', 'done')]"/>
+                <filter string="Annulé" name="cancelled"
+                        domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="Aujourd'hui" name="today"
+                        domain="[('reservation_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Grouper par">
+                    <filter string="Client" name="group_partner"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter string="Table" name="group_table"
+                            context="{'group_by': 'table_id'}"/>
+                    <filter string="Statut" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                    <filter string="Date" name="group_date"
+                            context="{'group_by': 'reservation_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_restaurant_reservation_calendar" model="ir.ui.view">
+        <field name="name">restaurant.reservation.calendar</field>
+        <field name="model">restaurant.reservation</field>
+        <field name="arch" type="xml">
+            <calendar string="Réservations"
+                      date_start="reservation_date"
+                      color="color"
+                      mode="week"
+                      event_open_popup="true"
+                      quick_create="false">
+                <field name="partner_id"/>
+                <field name="reservation_time"/>
+                <field name="nb_guests"/>
+                <field name="table_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="action_restaurant_reservation" model="ir.actions.act_window">
+        <field name="name">Planning des Réservations</field>
+        <field name="res_model">restaurant.reservation</field>
+        <field name="view_mode">list,calendar,form</field>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune réservation pour le moment
+            </p>
+            <p>
+                Créez une réservation pour planifier l'accueil de vos clients.
+            </p>
+        </field>
+    </record>
+
+</odoo>

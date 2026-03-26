@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_waste_tracking_root"
+              name="Gaspillage"
+              web_icon="restaurant_waste_tracking,static/description/icon.svg"
+              sequence="90"/>
+
+    <menuitem id="menu_waste_tracking_lines"
+              name="Suivi Gaspillage"
+              parent="menu_waste_tracking_root"
+              action="action_waste_line_tracking"
+              sequence="10"/>
+
+    <menuitem id="menu_waste_tracking_analytics"
+              name="Analytique"
+              parent="menu_waste_tracking_root"
+              action="action_waste_line_analytics"
+              sequence="20"/>
+
+</odoo>

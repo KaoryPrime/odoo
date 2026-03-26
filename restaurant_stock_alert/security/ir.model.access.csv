@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_restaurant_stock_alert_rule_user,restaurant.stock.alert.rule user,model_restaurant_stock_alert_rule,base.group_user,1,1,1,0
+access_restaurant_stock_alert_rule_manager,restaurant.stock.alert.rule manager,model_restaurant_stock_alert_rule,base.group_system,1,1,1,1
+access_restaurant_stock_alert_line_user,restaurant.stock.alert.line user,model_restaurant_stock_alert_line,base.group_user,1,1,1,0
+access_restaurant_stock_alert_line_manager,restaurant.stock.alert.line manager,model_restaurant_stock_alert_line,base.group_system,1,1,1,1

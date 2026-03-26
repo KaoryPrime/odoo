@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_restaurant_daily_menu_root"
+              name="Carte du Jour"
+              sequence="90"/>
+
+    <menuitem id="menu_restaurant_daily_menu_menus"
+              name="Menus"
+              parent="menu_restaurant_daily_menu_root"
+              action="action_restaurant_daily_menu"
+              sequence="10"/>
+
+    <menuitem id="menu_restaurant_daily_menu_planning"
+              name="Planning"
+              parent="menu_restaurant_daily_menu_root"
+              action="action_restaurant_daily_menu_planning"
+              sequence="20"/>
+
+</odoo>

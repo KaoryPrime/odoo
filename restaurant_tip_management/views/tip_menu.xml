@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_restaurant_tip_root"
+              name="Pourboires"
+              web_icon="restaurant_tip_management,static/description/icon.svg"
+              sequence="90"/>
+
+    <menuitem id="menu_restaurant_tip_tips"
+              name="Pourboires"
+              parent="menu_restaurant_tip_root"
+              action="action_restaurant_tip"
+              sequence="10"/>
+
+    <menuitem id="menu_restaurant_tip_pool"
+              name="Répartition"
+              parent="menu_restaurant_tip_root"
+              action="action_restaurant_tip_pool"
+              sequence="20"/>
+
+    <menuitem id="menu_restaurant_tip_analytics"
+              name="Analytique"
+              parent="menu_restaurant_tip_root"
+              action="action_restaurant_tip_analytics"
+              sequence="30"/>
+
+</odoo>

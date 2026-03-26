@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_restaurant_tip_form" model="ir.ui.view">
+        <field name="name">restaurant.tip.form</field>
+        <field name="model">restaurant.tip</field>
+        <field name="arch" type="xml">
+            <form string="Pourboire">
+                <header>
+                    <button name="action_validate"
+                            string="Valider"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_mark_paid"
+                            string="Marquer payé"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'validated'"/>
+                    <button name="action_reset_draft"
+                            string="Remettre en brouillon"
+                            type="object"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,validated,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="True"/></h1>
+                    </div>
+                    <group>
+                        <group string="Informations">
+                            <field name="employee_id"/>
+                            <field name="department_id" readonly="True"/>
+                            <field name="tip_date"/>
+                        </group>
+                        <group string="Détails">
+                            <field name="amount"/>
+                            <field name="source"/>
+                            <field name="sale_order_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="note" placeholder="Remarque..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_restaurant_tip_list" model="ir.ui.view">
+        <field name="name">restaurant.tip.list</field>
+        <field name="model">restaurant.tip</field>
+        <field name="arch" type="xml">
+            <list string="Pourboires"
+                  decoration-success="state == 'paid'"
+                  decoration-info="state == 'validated'"
+                  decoration-muted="state == 'draft'">
+                <field name="tip_date"/>
+                <field name="employee_id"/>
+                <field name="department_id" optional="show"/>
+                <field name="amount"/>
+                <field name="source"/>
+                <field name="sale_order_id" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'paid'"
+                       decoration-info="state == 'validated'"
+                       decoration-warning="state == 'draft'"/>
+                <field name="color" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_restaurant_tip_search" model="ir.ui.view">
+        <field name="name">restaurant.tip.search</field>
+        <field name="model">restaurant.tip</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher">
+                <field name="employee_id"/>
+                <field name="sale_order_id"/>
+                <separator/>
+                <filter string="Brouillon" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Validé" name="validated"
+                        domain="[('state', '=', 'validated')]"/>
+                <filter string="Payé" name="paid"
+                        domain="[('state', '=', 'paid')]"/>
+                <separator/>
+                <filter string="Espèces" name="cash"
+                        domain="[('source', '=', 'cash')]"/>
+                <filter string="Carte" name="card"
+                        domain="[('source', '=', 'card')]"/>
+                <filter string="En ligne" name="online"
+                        domain="[('source', '=', 'online')]"/>
+                <separator/>
+                <filter string="Aujourd'hui" name="today"
+                        domain="[('tip_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Grouper par">
+                    <filter string="Employé" name="group_employee"
+                            context="{'group_by': 'employee_id'}"/>
+                    <filter string="Département" name="group_department"
+                            context="{'group_by': 'department_id'}"/>
+                    <filter string="Source" name="group_source"
+                            context="{'group_by': 'source'}"/>
+                    <filter string="Statut" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                    <filter string="Date" name="group_date"
+                            context="{'group_by': 'tip_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_restaurant_tip_pivot" model="ir.ui.view">
+        <field name="name">restaurant.tip.pivot</field>
+        <field name="model">restaurant.tip</field>
+        <field name="arch" type="xml">
+            <pivot string="Analyse des pourboires">
+                <field name="employee_id" type="row"/>
+                <field name="tip_date" type="col" interval="month"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_restaurant_tip_graph" model="ir.ui.view">
+        <field name="name">restaurant.tip.graph</field>
+        <field name="model">restaurant.tip</field>
+        <field name="arch" type="xml">
+            <graph string="Pourboires" type="bar">
+                <field name="employee_id" type="row"/>
+                <field name="amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_restaurant_tip" model="ir.actions.act_window">
+        <field name="name">Pourboires</field>
+        <field name="res_model">restaurant.tip</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucun pourboire enregistré
+            </p>
+            <p>
+                Enregistrez les pourboires reçus par le personnel du restaurant.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_restaurant_tip_analytics" model="ir.actions.act_window">
+        <field name="name">Analytique</field>
+        <field name="res_model">restaurant.tip</field>
+        <field name="view_mode">pivot,graph,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune donnée analytique disponible
+            </p>
+        </field>
+    </record>
+
+    <record id="view_restaurant_tip_pool_form" model="ir.ui.view">
+        <field name="name">restaurant.tip.pool.form</field>
+        <field name="model">restaurant.tip.pool</field>
+        <field name="arch" type="xml">
+            <form string="Répartition des pourboires">
+                <header>
+                    <button name="action_calculate"
+                            string="Calculer"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_distribute"
+                            string="Distribuer"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'calculated'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,calculated,distributed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="True"/></h1>
+                    </div>
+                    <group>
+                        <group string="Période">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group string="Résumé">
+                            <field name="total_tips" readonly="True"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" readonly="state == 'distributed'">
+                        <list string="Distribution" editable="bottom">
+                            <field name="employee_id"/>
+                            <field name="tip_count"/>
+                            <field name="total_amount"/>
+                            <field name="share_percentage"/>
+                            <field name="amount_to_pay"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_restaurant_tip_pool_list" model="ir.ui.view">
+        <field name="name">restaurant.tip.pool.list</field>
+        <field name="model">restaurant.tip.pool</field>
+        <field name="arch" type="xml">
+            <list string="Répartitions"
+                  decoration-success="state == 'distributed'"
+                  decoration-info="state == 'calculated'"
+                  decoration-muted="state == 'draft'">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="total_tips"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'distributed'"
+                       decoration-info="state == 'calculated'"
+                       decoration-warning="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_restaurant_tip_pool" model="ir.actions.act_window">
+        <field name="name">Répartition</field>
+        <field name="res_model">restaurant.tip.pool</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune répartition créée
+            </p>
+            <p>
+                Créez une répartition pour distribuer les pourboires entre les employés.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -13,26 +13,12 @@ ALLOWED_DELIVERY_SLOTS = (
 )
 
 class RestaurantWebsiteSale(WebsiteSale):
-    """
-    Surcharge du contrôleur website_sale pour sauvegarder les créneaux
-    restaurant sur la commande lors du passage en paiement.
 
-    Odoo 18 : request.website.sale_get_order() est remplacé par
-    request.cart (accès direct au panier courant).
-    """
-
-    @route(
-        ['/shop/payment'],
-        type='http',
-        auth='public',
-        website=True,
-        methods=['GET', 'POST'],
-        sitemap=False,
-    )
+    @route('/shop/payment', type='http', auth='public', website=True, sitemap=False)
     def shop_payment(self, **post):
         res = super().shop_payment(**post)
 
-        order = getattr(request, 'cart', None)
+        order = request.website.sale_get_order()
 
         if not order:
             return res

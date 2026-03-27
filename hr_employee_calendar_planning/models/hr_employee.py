@@ -28,6 +28,8 @@ SECTION_LINES = [
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
+    comment = fields.Html(string='Notes')
+
     calendar_ids = fields.One2many(
         comodel_name="hr.employee.calendar",
         inverse_name="employee_id",

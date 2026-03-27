@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="delivery_carrier_pickup" model="delivery.carrier">
+        <field name="name">Retrait sur place</field>
+        <field name="delivery_type">fixed</field>
+        <field name="fixed_price">0</field>
+        <field name="product_id" ref="delivery.product_product_delivery"/>
+        <field name="is_published" eval="True"/>
+        <field name="sequence">1</field>
+    </record>
+
+    <record id="delivery_carrier_delivery" model="delivery.carrier">
+        <field name="name">Livraison à domicile</field>
+        <field name="delivery_type">fixed</field>
+        <field name="fixed_price">0</field>
+        <field name="product_id" ref="delivery.product_product_delivery"/>
+        <field name="is_published" eval="True"/>
+        <field name="sequence">2</field>
+    </record>
+
+</odoo>

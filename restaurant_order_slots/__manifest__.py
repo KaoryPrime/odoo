@@ -1,7 +1,7 @@
 {
     'name': 'Restaurant Order Slots',
     'version': '18.0.1.0.0',
-    'depends': ['sale', 'website_sale'],
+    'depends': ['sale', 'website_sale', 'delivery'],
     'author': 'Kamil',
     'category': 'Sales',
     'summary': 'Créneaux horaires et type de commande pour restaurant (à emporter / livraison)',
@@ -17,6 +17,7 @@
     """,
     'data': [
         'security/ir.model.access.csv',
+        'data/delivery_carrier_data.xml',
         'views/sale_order_views.xml',
         'views/templates.xml',
         'views/report_sale_order.xml',
